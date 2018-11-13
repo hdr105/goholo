@@ -176,3 +176,19 @@ function detect_status_change($status){
 		return "disapproved";
 	}
 }
+
+if (!function_exists('modal_anchor')) {
+
+    function modal_anchor($url, $title = '', $attributes = '') {
+        $attributes["data-act"] = "ajax-modal";
+        if (get_array_value($attributes, "data-modal-title")) {
+            $attributes["data-title"] = get_array_value($attributes, "data-modal-title");
+        } else {
+            $attributes["data-title"] = get_array_value($attributes, "title");
+        }
+        $attributes["data-action-url"] = $url;
+
+        return js_anchor($title, $attributes);
+    }
+
+}

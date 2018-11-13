@@ -16,7 +16,7 @@
 	</div>	
 
 
-	<table class="table table-bordered table-stripped datatable">
+	<table class="table table-bordered table-stripped" id="locations_records">
 		<thead>
 			<tr>
 				<th>Sr.</th>
@@ -76,4 +76,10 @@
 	</table>
 
 </div>
-
+<script type="text/javascript">
+	$(document).ready(function(){
+	$("#locations_records").DataTable({
+		 "pageLength": 100
+	});
+});
+</script>

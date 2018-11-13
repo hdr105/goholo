@@ -112,9 +112,16 @@
             <?php   
           }
           ?>
+
+          <?php if($this->session->userdata("user_role" !== "")) {?>
           <div class="row">
             <a href="<?=base_url()?>advertisers/manage_advertisement/<?=$location_id?>" class="btn btn-primary">Advertise Here</a>
           </div>
+        <?php } else{ ?>
+         <div class="row">
+          <a  class="btn btn-info" onClick="advertiseaa(<?=$location_id?>)"  data-id="<?=$location_id?>">Advertise Here </a>
+        </div>
+      <?php } ?>
       </div>
     </div>
   </div>

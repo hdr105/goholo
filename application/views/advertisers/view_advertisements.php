@@ -29,7 +29,7 @@
 				<?php
 				if ($user_role == 1) {
 					?>
-					<th width="120px">Action</th>
+					<th width="200px">Action</th>
 					<?php
 				}
 				?>
@@ -58,8 +58,12 @@
 
 				if ($user_role == 1) {
 
-					echo "<td> <a class='btn btn-primary round-btn' href='".base_url()."advertisers/manage_advertisement/".$value->location_id."/".$value->advert_id."'>Edit</a> &nbsp; <a href='".base_url()."advertisers/delete_advertisement/".$value->advert_id."' class='btn btn-danger round-btn delete-btn'>Delete</a></td>
+				
+
+					echo "<td> <a class='btn btn-info round-btn' href='".base_url()."advertisers/advertisement_info/".$value->location_id."/".$value->advert_id."'>View</a> &nbsp; <a class='btn btn-primary round-btn' href='".base_url()."advertisers/manage_advertisement/".$value->location_id."/".$value->advert_id."'>Edit</a> &nbsp; <a href='".base_url()."advertisers/delete_advertisement/".$value->advert_id."' class='btn btn-danger round-btn delete-btn'>Delete</a></td>
 				</tr>";
+
+
 
 				}
 				

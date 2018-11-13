@@ -51,5 +51,23 @@ class PhpMailerLib
             return $res;
 
         }
+
+        public function contact_us_mail($data)
+        {
+            $this->mail->setFrom($data['email'],$data['name']);
+            $this->mail->addAddress($this->mail->Username); 
+            $this->mail->isHTML(true);                     
+            $this->mail->Subject = 'Query From Contact Form';
+            $this->mail->Body  = 
+            "Sender Email: ".$data['email']."<br> Sender Name: ".$data['name']."<br> Intrested Location: ".$data['location']."<br> Contact Number: ".$data['tel']."<br> Comments: ".$data['msg']." <br> <br><br><div> <b>Best Regards,</b> <br> ".$data['name']."</div>";
+
+            $email = $this->mail->send();
+
+            $res = array('res'=>$email,'data'=>$this->mail);
+
+            return $res;
+        }
+
     }
+
 

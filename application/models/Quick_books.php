@@ -156,7 +156,8 @@ class Quick_books extends Settings_model{
 
 	}
 
-	public function add_vendor($data){
+	public function 
+	add_vendor($data){
 
 		$this->refresh_token();
 
@@ -581,7 +582,7 @@ class Quick_books extends Settings_model{
 		$tokenEndPointUrl = $this->config->item('qb_tokenEndPointUrl');
 		$grant_type= 'refresh_token';
 
-		$certFilePath = 'quickbooks/auth2/OAuth_2/Certificate/cacert.pem';
+		$certFilePath = APPPATH.'third_party/quickbooks/auth2/OAuth_2/Certificate/cacert.pem';
 
 		$client = new Client($this->qb_client_id, $this->qb_client_secret, $certFilePath);
 

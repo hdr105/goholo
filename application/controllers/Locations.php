@@ -426,8 +426,11 @@ class Locations extends GH_Controller {
 			$locations[$key]->infowindow_content = $this->load->view("location/infowindow_content",$value,true);
 			
 		}
-
+		// echo "<pre>";
+		// print_r($locations);
+		// exit();
 		echo json_encode($locations);
+		exit();
 	}
 
 

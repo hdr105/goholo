@@ -141,7 +141,7 @@ let info = "";
 let km = 30;
 let Crcl ; // circle variable
 let mapOptions = {
- zoom: 11,
+ zoom: 12,
  center: {lat:53.5555501, lng:-113.77413}
 }; // map options
 
@@ -364,19 +364,21 @@ function initMap() {
           type:"post",
           success:function(res){
             res =  JSON.parse(res);
+            //console.log(res);
             var infowindow = new google.maps.InfoWindow();
 
             $.each(res,function(k,v){
-
+              // console.log(v);
 
         // var marker = new google.maps.Marker({
         //   position: v.lat_lng,
         //   map: map,
         //   title: 'Hello World!',
-        //   html: v.infowindow_content,
+        //   // html: v.infowindow_content,
         //   icon: base_url+"assets/images/marker.png"
         // });
-        var bounds = new google.maps.LatLngBounds();
+        let bounds = new google.maps.LatLngBounds();
+
 
         var latLng = new google.maps.LatLng(v.lat_lng.lat, v.lat_lng.lng);
 
@@ -390,7 +392,7 @@ function initMap() {
 
         markers.push(marker);
 
-        bounds.extend(marker.getPosition());
+        //bounds.extend(latLng);
 
         google.maps.event.addListener(marker, 'click', (function (marker, i) {
           return function () {
@@ -401,11 +403,15 @@ function initMap() {
           }
         })
         (marker, k));
+        map.setCenter(marker.getPosition());
+        //map.fitBounds(bounds);      
+        //map.panToBounds(bounds);   
 
         
 
         
-      })
+      });
+ 
             
           }
         })
@@ -556,4 +562,8 @@ function initMap() {
         });
 
 
-      }     
+      }    
+
+
+
+

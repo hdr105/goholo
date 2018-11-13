@@ -41,6 +41,7 @@
    <link href="<?php echo base_url(); ?>assets/css/MonthPicker.min.css" rel="stylesheet" type="text/css" />
    <link href="<?php echo base_url(); ?>assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url(); ?>assets/pages/css/contact.min.css" rel="stylesheet" type="text/css" />
 
    <link rel="shortcut icon" href="favicon.ico" />
 
@@ -68,8 +69,9 @@
    <script src="<?php echo base_url(); ?>assets/pages/scripts/ui-bootbox.min.js" type="text/javascript"></script>
 
 
+
    <script src="https://maps.googleapis.com/maps/api/js?key=
-AIzaSyCX6yN_ROeijYHuLbI10LofNbsTmw1XyKo&libraries=places&callback=initialize" async defer></script>
+AIzaSyCLZzq31lWF8Oo31xbFTqHchlmXIfzqeAI&libraries=places&callback=initialize" async defer></script>
 
    <script src="<?php echo base_url(); ?>assets/layouts/layout5/scripts/custom.js" type="text/javascript"></script>
 
@@ -79,6 +81,7 @@ AIzaSyCX6yN_ROeijYHuLbI10LofNbsTmw1XyKo&libraries=places&callback=initialize" as
     <script src="<?php echo base_url(); ?>assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
     <script src="<?php echo base_url(); ?>assets/pages/scripts/components-select2.min.js" type="text/javascript"></script>
     <script src="<?php echo base_url(); ?>assets/html5lightbox/html5lightbox.js"></script>
+
 
 
 
@@ -251,3 +254,4 @@ AIzaSyCX6yN_ROeijYHuLbI10LofNbsTmw1XyKo&libraries=places&callback=initialize" as
 </header>
 <!-- END HEADER -->
 <div class="">
+

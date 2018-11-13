@@ -323,6 +323,38 @@ class Advertisers extends GH_Controller {
 		$this->load->view('common/footer');
 	}
 
+	public function advertisement_info($location_id,$advert_id)
+	{
+		$join['locations l'] = "ad.location_id=l.location_id";
+		$join['advertisers a'] = "a.advertiser_id=ad.advertiser_id";
+
+		$where = array();
+		$user_role = get_user_role();
+
+		$this->data['user_role'] = $user_role;
+		$where['advert_id'] = $advert_id;
+		$where['l.location_id'] = $location_id;
+
+		if ($user_role != 1) {
+
+			if ($user_role == 3) {
+				$where['ad.created_by'] = get_user_id();
+			}elseif ($user_role == 2) {
+				$where['l.location_owner'] = get_user_id();
+			}
+		}
+
+		$this->data['locations'] =  $this->crud_model->get_data("advertisements ad",$where,true,$join,'','*,ad.status as advert_status');
+		// echo "<pre>";
+		// echo $this->data['locations']->location_street;
+		// print_r($this->data['locations']);
+		// exit();
+		$this->load->view('common/header',$this->data);
+		$this->load->view('common/sidebar',$this->data);
+		$this->load->view('advertisers/view_advertisements_info',$this->data);
+		$this->load->view('common/footer');
+	}
+
 
 	public function delete_advertisement($id){
 

@@ -341,3 +341,12 @@
 	padding: 0 0 15px;
 	min-width: 125px;
 }
+
+.div.dataTables_wrapper div.dataTables_paginate{
+	    margin-right: 15px !important;
+}
+
+
+.go2top i, .go2top i:focus{
+	right: 4px !important;
+}
