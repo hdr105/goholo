@@ -144,6 +144,7 @@ class Payouts extends GH_Controller {
 
 			$where['ad.created_by'] = $user_id;
 			$join['packages p'] = "ad.package_id=p.package_id"; 
+			$join['locations l'] = "ad.location_id=l.location_id"; 
 			$advert = $this->crud_model->get_data("advertisements ad",$where,'',$join);
 
 			$net_commission = 0;
@@ -152,17 +153,19 @@ class Payouts extends GH_Controller {
 
 			foreach ($advert as $key => $value) {
 
-				$start_month = DateTime::createFromFormat("m/Y", $value->start_date);
-				$start_timestamp = $start_month->getTimestamp();
-				$start_date = date('Y-m-01', $start_timestamp);
+				// $start_month = DateTime::createFromFormat("m/Y", $value->start_date);
+				// $start_timestamp = $start_month->getTimestamp();
+				// $start_date = date('Y-m-01', $start_timestamp);
 
-				$end_month = DateTime::createFromFormat("m/Y", $value->end_date);
-				$end_timestamp = $end_month->modify('+1 month')->getTimestamp();
-				$end_date = date('Y-m-01', $end_timestamp);
+				// $end_month = DateTime::createFromFormat("m/Y", $value->end_date);
+				// $end_timestamp = $end_month->modify('+1 month')->getTimestamp();
+				// $end_date = date('Y-m-01', $end_timestamp);
 
-				$qty = (int)abs((strtotime($start_date) - strtotime($end_date))/(60*60*24*30));
+				// $qty = (int)abs((strtotime($start_date) - strtotime($end_date))/(60*60*24*30));
 				
-				$cost = $value->total_cost*$qty;
+				//$cost = $value->total_cost*$qty;
+
+				$cost = $value->total_cost;
 
 				$user_commission = get_user_commission($user_id);
 

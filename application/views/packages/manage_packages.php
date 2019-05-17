@@ -97,6 +97,7 @@
 				</div>
 				<div class="form-actions right">
 					<input type="hidden" name="package_id" class="package_id">
+					<input type="hidden" name="item_qb_id" class="item_qb_id">
 					<button type="submit" class="btn blue">
 						<i class="fa fa-check"></i> Save</button>
 					</div>

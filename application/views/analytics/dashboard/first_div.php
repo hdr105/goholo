@@ -9,7 +9,7 @@
                             
                               <div class="col-12 bgd-blue border_radius">
                                
-                                    <p class="text-white font12md margin0 center_img ptb20">Location  </p>
+                                    <p class="text-white font12md margin0 center_img ptb20"><?=$location->location_name?>  </p>
                                 
                               </div>
                            </div>

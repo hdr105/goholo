@@ -176,29 +176,27 @@
 									</option>
 									<?php
 									foreach ($packages as $key => $value) {
-										echo "<option ".($package_id == $value->package_id ? 'selected' : '')." value='".$value->package_id."' >".$value->package_name."</option>";
+										echo "<option ".($package_id == $value->package_id ? 'selected' : '')." value='".$value->package_id."' >".$value->package_name."  ($".$value->total_cost.")  </option>";
 									}
 									?>
 								</select>
 								<span class="help-block"> <?php echo $package_id_error;  ?> </span>
 							</div>
-						</div>					</div>
+						</div>					
 
-
-					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label class="control-label">Start Month of Advertisment</label>
+								<label class="control-label">Start Date of Advertisment</label>
 								<input type="text" class="form-control start_date MonthPicker" name="start_date" value="<?php echo (set_value('start_date'));   ?>">
 							</div>
 						</div>
 						<!--/span-->
-						<div class="col-md-6">
+					<!-- 	<div class="col-md-6">
 							<div class="form-group">
 								<label class="control-label">End Month of Advertisment</label>
 								<input type="text" class="form-control end_date MonthPicker" name="end_date" value="<?php echo (set_value('end_date'));   ?>">
 							</div>
-						</div>
+						</div> -->
 						<!--/span-->
 					</div>
 					<!--/row-->
@@ -286,7 +284,7 @@ if ($advertiser_type != "") {
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('.MonthPicker').MonthPicker({ MinMonth: 1,Button: false });
+			$('.MonthPicker').datepicker({ minDate : 0});
 		});
 
 	</script>

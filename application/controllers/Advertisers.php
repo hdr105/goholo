@@ -69,6 +69,8 @@ class Advertisers extends GH_Controller {
 
 			$result = $this->form_validation->run();
 
+			
+
 			if ($result) {
 
 
@@ -135,17 +137,21 @@ class Advertisers extends GH_Controller {
 					$advertiser = $this->crud_model->get_data('users',array("user_id"=>$form_data['advertiser_id']),true);
 
 
-					$start_month = DateTime::createFromFormat("m/Y", $form_data['start_date']);
-					$start_timestamp = $start_month->getTimestamp();
-					$start_date = date('Y-m-01', $start_timestamp);
+					// $start_month = DateTime::createFromFormat("m/Y", $form_data['start_date']);
+					// $start_timestamp = $start_month->getTimestamp();
+					// $start_date = date('Y-m-01', $start_timestamp);
 
-					$end_month = DateTime::createFromFormat("m/Y", $form_data['end_date']);
-					$end_timestamp = $end_month->modify('+1 month')->getTimestamp();
-					$end_date = date('Y-m-01', $end_timestamp);
+					// $end_month = DateTime::createFromFormat("m/Y", $form_data['end_date']);
+					// $end_timestamp = $end_month->modify('+1 month')->getTimestamp();
+					// $end_date = date('Y-m-01', $end_timestamp);
 
-					$quick_books_data['qty'] = (int)abs((strtotime($start_date) - strtotime($end_date))/(60*60*24*30));
+					//$quick_books_data['qty'] = (int)abs((strtotime($start_date) - strtotime($end_date))/(60*60*24*30));
 
-					$quick_books_data['total_amount'] = $quick_books_data['qty'] * $package->total_cost;
+					//$quick_books_data['total_amount'] = $quick_books_data['qty'] * $package->total_cost;
+
+					$quick_books_data['qty'] = 1;
+
+					$quick_books_data['total_amount'] = $package->total_cost;
 
 					$quick_books_data['monthly_cost'] = $package->total_cost;
 

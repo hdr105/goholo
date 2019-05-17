@@ -55,9 +55,12 @@ class Dashboard extends GH_Controller {
 
 		}
 
-		
 
-		
+		$location = $this->video_model->get_data_new(array('table' => 'locations' , 'where'=> array("location_id"=>$locationID), 'single_row'=>true ));
+
+			
+
+		$this->data['location'] = $location;
 
 		
 

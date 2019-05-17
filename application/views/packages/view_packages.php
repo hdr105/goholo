@@ -43,7 +43,7 @@
 				<td>".$value->total_impressions."</td>
 				<td>".$value->cost_per_impression."</td>
 				<td>".$value->hologram_price."</td>
-				<td>".$value->total_cost."</td>
+				<td>$".$value->total_cost."</td>
 				<td> <a class='btn btn-primary round-btn' href='".base_url()."admin/manage_packages/".$value->package_id."'>Edit</a> &nbsp; <a href='".base_url()."admin/delete_package/".$value->package_id."' class='btn btn-danger round-btn delete-btn'>Delete</a></td>
 				</tr>";
 
