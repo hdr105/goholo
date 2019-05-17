@@ -27,9 +27,9 @@
 				<th>Status</th>
 
 				<?php
-				if ($user_role == 1) {
+				if ($user_role == 1 || $user_role == 6) {
 					?>
-					<th width="120px">Action</th>
+					<th width="200px">Action</th>
 					<?php
 				}
 				?>
@@ -43,7 +43,7 @@
 			foreach ($adverts as $key => $value) {
 				echo "<tr>
 				<td>".$i."</td>
-				<td>".$value->advertiser_first_name.' '.$value->advertiser_last_name."</td>
+				<td>".$value->first_name.' '.$value->last_name."</td>
 				<td>".$value->advert_number."</td>
 				<td>".$value->location_name."</td>
 				<td>".$value->location_number."</td>";
@@ -56,11 +56,18 @@
 					echo "<td>".get_status($value->advert_status)."</td>";
 				}
 
-				if ($user_role == 1) {
+				if ($user_role == 1 ) {
 
-					echo "<td> <a class='btn btn-primary round-btn' href='".base_url()."advertisers/manage_advertisement/".$value->location_id."/".$value->advert_id."'>Edit</a> &nbsp; <a href='".base_url()."advertisers/delete_advertisement/".$value->advert_id."' class='btn btn-danger round-btn delete-btn'>Delete</a></td>
+				
+
+					echo "<td> <a class='btn btn-info round-btn' href='".base_url()."advertisers/advertisement_info/".$value->location_id."/".$value->advert_id."'>View</a> &nbsp; <a class='btn btn-primary round-btn' href='".base_url()."advertisers/manage_advertisement/".$value->location_id."/".$value->advert_id."'>Edit</a> &nbsp; <a href='".base_url()."advertisers/delete_advertisement/".$value->advert_id."' class='btn btn-danger round-btn delete-btn'>Delete</a></td>
 				</tr>";
 
+
+
+				}elseif ($user_role == 6) {
+					echo "<td> <a class='btn btn-info round-btn' href='".base_url()."advertisers/advertisement_info/".$value->location_id."/".$value->advert_id."'>View</a></td>
+				</tr>";
 				}
 				
 				

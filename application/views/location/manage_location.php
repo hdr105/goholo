@@ -1,5 +1,4 @@
 <div class="page-content-col">
-
 	<div class="row">
 		<?php
 
@@ -57,7 +56,7 @@
 								
 							</div>
 
-							<div class="row">
+						<!-- 	<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>How many people will see the ad every month 
@@ -73,7 +72,7 @@
 									</div>
 								</div>
 								
-							</div>
+							</div> -->
 
 							<div class="row">
 								<div class="col-md-6">
@@ -83,24 +82,24 @@
 										<input id="industry " name="industry" class="form-control industry" value="<?=set_value('industry')?>" type="text"> 
 									</div>
 								</div>
-								<div class="col-md-6">
+								<!-- <div class="col-md-6">
 									<div class="form-group">
 										<label>Age Group
 										</label>
 										<input id="age_group" name="age_group" class="form-control age_group" value="<?=set_value('age_group')?>" type="text"> 
 									</div>
-								</div>
+								</div> -->
 								
-							</div>
+						<!-- 	</div>
 
-							<div class="row">
-								<div class="col-md-6">
+							<div class="row"> -->
+								<!-- <div class="col-md-6">
 									<div class="form-group">
 										<label>Cost Per Month 
 										</label>
 										<input id="monthly_cost " name="monthly_cost" class="form-control monthly_cost" value="<?=set_value('monthly_cost')?>" type="text"> 
 									</div>
-								</div>
+								</div> -->
 								<div class="col-md-6">
 									<?php
 									$owner_royalty  = 10;
@@ -117,9 +116,9 @@
 									</div>
 								</div>
 								
-							</div>
+							<!-- </div>
 
-							<div class="row">
+							<div class="row"> -->
 									<div class="col-md-6">
 									<?php
 									$advert_royalty  = 5;
@@ -165,6 +164,17 @@
 								<?php
 							}
 							?>	
+
+								<div class="col-md-6">
+										<div class="form-group">
+											<label class="control-label">Location Type
+											</label>
+											<select class="form-control location_type" name="location_type">
+												<option value="1">Public</option>
+												<option value="0">Private</option>
+											</select>
+										</div>
+									</div>
 
 						</div>
 

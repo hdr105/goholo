@@ -60,7 +60,7 @@
 									</option>
 									<?php
 									foreach ($advertisers as $key => $value) {
-										echo "<option ".($advertiser_id == $value->advertiser_id ? 'selected' : '')." value='".$value->advertiser_id."' >".$value->advertiser_first_name." ".$value->advertiser_last_name."</option>";
+										echo "<option ".($advertiser_id == $value->user_id ? 'selected' : '')." value='".$value->user_id."' >".$value->first_name." ".$value->last_name."</option>";
 									}
 									?>
 								</select>
@@ -73,22 +73,22 @@
 						<div class="row">
 							<div class="col-md-6">
 								<?php
-								$company_name_error = form_error('advert[advertiser_company_name]');
+								$company_name_error = form_error('advert[company_name]');
 								?>
 								<div class="form-group <?php echo ($company_name_error != '') ? 'has-error' : '' ?>">
 									<label class="control-label">Company Name</label>
-									<input type="text" id="" class="form-control advertiser_company_name" name="advert[advertiser_company_name]" placeholder="Enter Company Name" value="<?php echo (set_value('advert[advertiser_company_name]'));   ?>">
+									<input type="text" id="" class="form-control company_name" name="advert[company_name]" placeholder="Enter Company Name" value="<?php echo (set_value('advert[company_name]'));   ?>">
 									<span class="help-block"> <?php echo $company_name_error;  ?> </span>
 								</div>
 							</div>
 							<!--/span-->
 							<div class="col-md-6">
 								<?php
-								$website_error = form_error('advert[advertiser_website]');
+								$website_error = form_error('advert[website]');
 								?>
 								<div class="form-group <?php echo ($website_error != '') ? 'has-error' : '' ?>">
 									<label class="control-label">Website</label>
-									<input type="text" id="" class="form-control advertiser_website" placeholder="Enter Website" name="advert[advertiser_website]" value="<?php echo (set_value('advert[advertiser_website]'));   ?>">
+									<input type="text" id="" class="form-control website" placeholder="Enter Website" name="advert[website]" value="<?php echo (set_value('advert[website]'));   ?>">
 									<span class="help-block"> <?php echo $website_error;  ?> </span>
 								</div>
 							</div>
@@ -97,23 +97,23 @@
 						<div class="row">
 							<div class="col-md-6">
 								<?php
-								$first_name_error = form_error('advert[advertiser_first_name]');
+								$first_name_error = form_error('advert[first_name]');
 								?>
 								<div class="form-group <?php echo ($first_name_error != '') ? 'has-error' : '' ?>">
 									<label class="control-label">First Name
 									</label>
-									<input id="firstName" class="form-control advertiser_first_name" name="advert[advertiser_first_name]" placeholder="Enter First Name" value="<?php echo (set_value('advert[advertiser_first_name]'));   ?>" type="text">
+									<input id="firstName" class="form-control first_name" name="advert[first_name]" placeholder="Enter First Name" value="<?php echo (set_value('advert[first_name]'));   ?>" type="text">
 									<span class="help-block"> <?php echo $first_name_error;  ?> </span>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<?php
-								$last_name_error = form_error('advert[advertiser_last_name]');
+								$last_name_error = form_error('advert[last_name]');
 								?>
 								<div class="form-group <?php echo ($last_name_error != '') ? 'has-error' : '' ?>">
 									<label class="control-label">Last Name
 									</label>
-									<input id="lastName" class="form-control advertiser_last_name" placeholder="Enter Last Name" name="advert[advertiser_last_name]" value="<?php echo (set_value('advert[advertiser_last_name]'));   ?>" type="text">
+									<input id="lastName" class="form-control last_name" placeholder="Enter Last Name" name="advert[last_name]" value="<?php echo (set_value('advert[last_name]'));   ?>" type="text">
 									<span class="help-block"> <?php echo $last_name_error;  ?> </span>
 								</div>
 							</div>
@@ -122,48 +122,69 @@
 
 							<div class="col-md-6">
 								<?php
-								$email_error = form_error('advert[advertiser_email]');
+								$email_error = form_error('advert[email]');
 								?>
 								<div class="form-group <?php echo ($email_error != '') ? 'has-error' : '' ?>">
 									<label class="control-label">Email
 									</label>
-									<input id="email_input" name="advert[advertiser_email]" class="form-control advertiser_email" value="<?php echo (set_value('advert[advertiser_email]'));   ?>" type="email">
+									<input id="email_input" name="advert[email]" class="form-control email" value="<?php echo (set_value('advert[email]'));   ?>" type="email">
+									<span class="help-block"> <?php echo $email_error;  ?> </span>
+								</div>
+							</div>
+								<div class="col-md-6">
+								<?php
+								$password_error = form_error('advert[password]');
+								?>
+								<div class="form-group <?php echo ($password_error != '') ? 'has-error' : '' ?>">
+									<label class="control-label">Password
+									</label>
+									<input  name="advert[password]" class="form-control password" value="<?php echo (set_value('advert[password]'));   ?>" type="password">
 									<span class="help-block"> <?php echo $email_error;  ?> </span>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<?php
-								$phone_error = form_error('advert[advertiser_phone_number]');
+								$phone_error = form_error('advert[phone_number]');
 								?>
 								<div class="form-group <?php echo ($phone_error != '') ? 'has-error' : '' ?>">
 									<label for="exampleInputFile1">Phone Number</label>
-									<input type="text" name="advert[advertiser_phone_number]" class="form-control advertiser_phone_number" value="<?php echo (set_value('advert[advertiser_phone_number]'));   ?>">
+									<input type="text" name="advert[phone_number]" class="form-control phone_number" value="<?php echo (set_value('advert[phone_number]'));   ?>">
 									<span class="help-block"> <?php echo $phone_error;  ?> </span>
 								</div>
 
 							</div>
 						</div>
 
+						<input type="hidden" name="advert[user_role]" value="6">
+
 					</div>
 
 
-				<!-- 	<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<?php  $advertiser_id = set_value('advertiser_id'); ?>
-								<label class="control-label">Select Advertiser </label>
-								<select class="form-control advertiser_id" name="advertiser_id">
+	
+					<h3 class="form-section">Advertisment Info</h3>
+
+					<div class="row">
+									<div class="col-md-6 package_div" >
+							<?php  $package_id = set_value('package_id');
+							$package_id_error = form_error('package_id');
+							?>
+							<div class="form-group <?php echo ($package_id_error != '') ? 'has-error' : '' ?> ">
+								<label class="control-label">Select Package
+								</label>
+								<select name="package_id" class="form-control package_id">
+									<option value="" <?php echo ($package_id == '') ? 'selected' : '' ?> >Select Package
+									</option>
 									<?php
-									foreach ($advertisers as $key => $value) {
-										echo "<option ".($advertiser_id == $value->advertiser_id ? 'selected' : '')." value='".$value->advertiser_id."' >".$value->advertiser_first_name." ".$value->advertiser_last_name."</option>";
+									foreach ($packages as $key => $value) {
+										echo "<option ".($package_id == $value->package_id ? 'selected' : '')." value='".$value->package_id."' >".$value->package_name."</option>";
 									}
 									?>
 								</select>
+								<span class="help-block"> <?php echo $package_id_error;  ?> </span>
 							</div>
-						</div>
-					</div> -->
-					<!--/row-->
-					<h3 class="form-section">Advertisment Info</h3>
+						</div>					</div>
+
+
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">

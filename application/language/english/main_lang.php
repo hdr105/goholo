@@ -9,6 +9,7 @@ $lang['comment_added_task'] = "%s added comment on a task";
 $lang['task_delivered'] = "%s has delivered the task";
 $lang['new_marketing_member'] = "%s added new marketing memeber";
 $lang['new_resource'] = "A new resource has been added";
+$lang['new_package'] = "Package has been added";
 $lang['status_change'] = "%1s has %2s the %3s";
 $lang['task_status_change'] = "%1s has %2s the %3s by %4s";
 

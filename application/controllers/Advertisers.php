@@ -45,23 +45,23 @@ class Advertisers extends GH_Controller {
 				));
 			}elseif ($advertiser_type == 2) {
 
-				$this->form_validation->set_rules('advert[advertiser_company_name]', '*Company Name', 'required', array(
+				$this->form_validation->set_rules('advert[company_name]', '*Company Name', 'required', array(
 					'required' => '%s Missing'
 				));
 
 
-				$this->form_validation->set_rules('advert[advertiser_first_name]', '*First Name', 'required', array(
+				$this->form_validation->set_rules('advert[first_name]', '*First Name', 'required', array(
 					'required' => '%s Missing'
 				));
 
-				$this->form_validation->set_rules('advert[advertiser_last_name]', '*Last Name', 'required', array(
+				$this->form_validation->set_rules('advert[last_name]', '*Last Name', 'required', array(
 					'required' => '%s Missing'
 				));
 
-				$this->form_validation->set_rules('advert[advertiser_email]', '*Email', 'required|valid_email', array(
+				$this->form_validation->set_rules('advert[email]', '*Email', 'required|valid_email', array(
 					'required' => '%s Missing'
 				));
-				$this->form_validation->set_rules('advert[advertiser_phone_number]', '*Phone Number', 'required', array(
+				$this->form_validation->set_rules('advert[phone_number]', '*Phone Number', 'required', array(
 					'required' => '%s Missing'
 				));
 				
@@ -71,23 +71,24 @@ class Advertisers extends GH_Controller {
 
 			if ($result) {
 
+
 				$qb_customer = true;	
 
 				if ($advertiser_type == 2) {
 
-					$form_data['advert']['advertiser_street'] = "";
-					$form_data['advert']['advertiser_city'] = "";
-					$form_data['advert']['advertiser_country'] = "";
-					$form_data['advert']['advertiser_post_code'] = "";
+					$form_data['advert']['street'] = "";
+					$form_data['advert']['city'] = "";
+					$form_data['advert']['country'] = "";
+					$form_data['advert']['post_code'] = "";
 
 					$qb_add_customer = $this->quick_books->add_customer($form_data['advert']);
 					if ($qb_add_customer['error'] == false) {
 
-						$form_data['advert']['advertiser_qb_id'] = $qb_add_customer['msg'];
+						$form_data['advert']['user_qb_id'] = $qb_add_customer['msg'];
 						
 						$form_data['advert']['created_by'] = get_user_id();
 
-						$form_data['advertiser_id'] = $this->crud_model->add_data("advertisers",$form_data['advert']);
+						$form_data['advertiser_id'] = $this->crud_model->add_data("users",$form_data['advert']);
 
 					}else{
 
@@ -116,6 +117,8 @@ class Advertisers extends GH_Controller {
 
 				$edit = false;
 
+				$form_data['hologram_description'] = trim($form_data['hologram_description']);
+
 				if ($advert_id != "") {
 					$edit = true;
 
@@ -127,9 +130,10 @@ class Advertisers extends GH_Controller {
 
 				}else{
 
-					$location = $this->crud_model->get_data('locations',array("location_id"=>$location_id),true);
+					$package = $this->crud_model->get_data('packages',array("package_id"=>$form_data['package_id']),true);
 
-					$advertiser = $this->crud_model->get_data('advertisers',array("advertiser_id"=>$form_data['advertiser_id']),true);
+					$advertiser = $this->crud_model->get_data('users',array("user_id"=>$form_data['advertiser_id']),true);
+
 
 					$start_month = DateTime::createFromFormat("m/Y", $form_data['start_date']);
 					$start_timestamp = $start_month->getTimestamp();
@@ -141,18 +145,22 @@ class Advertisers extends GH_Controller {
 
 					$quick_books_data['qty'] = (int)abs((strtotime($start_date) - strtotime($end_date))/(60*60*24*30));
 
-					$quick_books_data['total_amount'] = $quick_books_data['qty'] * $location->monthly_cost;
+					$quick_books_data['total_amount'] = $quick_books_data['qty'] * $package->total_cost;
 
-					$quick_books_data['monthly_cost'] = $location->monthly_cost;
+					$quick_books_data['monthly_cost'] = $package->total_cost;
 
-					$quick_books_data['location_qb_id'] = $location->location_qb_id;
+					$quick_books_data['location_qb_id'] = $package->item_qb_id;
 
-					$quick_books_data['advertiser_qb_id'] = $advertiser->advertiser_qb_id;
+					$quick_books_data['advertiser_qb_id'] = $advertiser->user_qb_id;
 
-					$quick_books_data['advertiser_email'] = $advertiser->advertiser_email;
+					$quick_books_data['advertiser_email'] = $advertiser->email;
 
 
 					$qb_add = $this->quick_books->create_invoice($quick_books_data);
+
+					// echo "<pre>";
+					// print_r($qb_add);
+					// echo "</pre>"; die;
 
 					if ($qb_add['error'] == false) {
 						$form_data['advert_qb_id'] = $qb_add['msg'];
@@ -265,7 +273,9 @@ class Advertisers extends GH_Controller {
 				}else{
 
 					if (isset($edit)) {
-						$this->session->set_flashdata("error_msg","Advertisement Not Updated");
+						if (!isset($msg)) {
+							$msg = "Advertisement Not updated";
+						}
 					}else{
 						if (!isset($msg)) {
 							$msg = "Advertisement Not created";
@@ -287,7 +297,8 @@ class Advertisers extends GH_Controller {
 			$this->data['advert'] = $this->crud_model->get_data($this->table,$where,true);
 		}
 
-		$this->data['advertisers'] = $this->crud_model->get_data('advertisers');
+		$this->data['advertisers'] = $this->crud_model->get_data('users',array("user_role"=>6));
+		$this->data['packages'] = $this->crud_model->get_data('packages');
 
 		$this->load->view('common/header',$this->data);
 		$this->load->view('common/sidebar',$this->data);
@@ -298,7 +309,7 @@ class Advertisers extends GH_Controller {
 	public function view_advertisements()
 	{
 		$join['locations l'] = "ad.location_id=l.location_id";
-		$join['advertisers a'] = "a.advertiser_id=ad.advertiser_id";
+		$join['users u'] = "u.user_id=ad.advertiser_id";
 
 		$where = array();
 		$user_role = get_user_role();
@@ -311,6 +322,8 @@ class Advertisers extends GH_Controller {
 				$where['ad.created_by'] = get_user_id();
 			}elseif ($user_role == 2) {
 				$where['l.location_owner'] = get_user_id();
+			}elseif ($user_role == 6) {
+				$where['ad.advertiser_id'] = get_user_id();
 			}
 		}
 
@@ -320,6 +333,39 @@ class Advertisers extends GH_Controller {
 		$this->load->view('common/header',$this->data);
 		$this->load->view('common/sidebar',$this->data);
 		$this->load->view('advertisers/view_advertisements');
+		$this->load->view('common/footer');
+	}
+
+	public function advertisement_info($location_id,$advert_id)
+	{
+		$join['locations l'] = "ad.location_id=l.location_id";
+		$join['users u'] = "u.user_id=ad.advertiser_id";
+		$join['packages p'] = "p.package_id=ad.package_id";
+
+		$where = array();
+		$user_role = get_user_role();
+
+		$this->data['user_role'] = $user_role;
+		$where['advert_id'] = $advert_id;
+		$where['l.location_id'] = $location_id;
+
+		if ($user_role != 1) {
+
+			if ($user_role == 3) {
+				$where['ad.created_by'] = get_user_id();
+			}elseif ($user_role == 2) {
+				$where['l.location_owner'] = get_user_id();
+			}
+		}
+
+		$this->data['locations'] =  $this->crud_model->get_data("advertisements ad",$where,true,$join,'','*,ad.status as advert_status');
+		// echo "<pre>";
+		// echo $this->data['locations']->location_street;
+		// print_r($this->data['locations']);
+		// exit();
+		$this->load->view('common/header',$this->data);
+		$this->load->view('common/sidebar',$this->data);
+		$this->load->view('advertisers/view_advertisements_info',$this->data);
 		$this->load->view('common/footer');
 	}
 
@@ -348,7 +394,7 @@ class Advertisers extends GH_Controller {
 	}
 
 
-	public function manage_advertisers($advertiser_id = ""){
+	public function manage_advertisers($user_id = ""){
 
 		$form_data = $this->input->post();
 
@@ -359,18 +405,18 @@ class Advertisers extends GH_Controller {
 
 			$edit = false;
 
-			if ($advertiser_id != "") {
+			if ($user_id != "") {
 				$edit = true;
 
 				$qb_update_customer = $this->quick_books->update_customer($form_data);
 
 				if ($qb_update_customer['error'] == false) {
 
-					$where['advertiser_id'] = $form_data['advertiser_id'];
+					$where['user_id'] = $form_data['user_id'];
 
-					unset($form_data['advertiser_id']);
+					unset($form_data['user_id']);
 
-					$advert = $this->crud_model->update_data('advertisers',$where,$form_data);
+					$advert = $this->crud_model->update_data('users',$where,$form_data);
 
 				}else{
 					$advert = false;
@@ -386,14 +432,14 @@ class Advertisers extends GH_Controller {
 
 					$form_data['created_by'] = get_user_id();
 
-					$form_data['advertiser_qb_id'] = $qb_add_customer['msg'];
+					$form_data['user_qb_id'] = $qb_add_customer['msg'];
 
 					if ($user_role == 1) {
 
 						$form_data['status'] = 1;
 					}
 
-					$advert = $this->crud_model->add_data('advertisers',$form_data);
+					$advert = $this->crud_model->add_data('users',$form_data);
 				}else{
 					$advert = false;
 					$msg = $qb_add_customer['msg'];
@@ -437,10 +483,10 @@ class Advertisers extends GH_Controller {
 			}
 		}
 
-		if ($advertiser_id != "") {
-			$where['advertiser_id'] = $advertiser_id;
+		if ($user_id != "") {
+			$where['user_id'] = $user_id;
 
-			$this->data['advertiser'] = $this->crud_model->get_data('advertisers',$where,true);
+			$this->data['user'] = $this->crud_model->get_data('users',$where,true);
 		}
 
 
@@ -464,7 +510,9 @@ class Advertisers extends GH_Controller {
 			$where['created_by'] = get_user_id();
 		}
 
-		$this->data['advertisers'] =  $this->crud_model->get_data("advertisers",$where);
+		$where['user_role'] = 6;
+
+		$this->data['advertisers'] =  $this->crud_model->get_data("users",$where);
 
 
 		$this->load->view('common/header',$this->data);
@@ -475,16 +523,16 @@ class Advertisers extends GH_Controller {
 
 	public function delete_advertiser($id){
 
-		$where['advertiser_id'] = $id;
+		$where['user_id'] = $id;
 
-		$advertiser =  $this->crud_model->get_data("advertisers",$where,true,'','','advertiser_qb_id');
+		$advertiser =  $this->crud_model->get_data("users",$where,true,'','','user_qb_id');
 
 
-		$qb_inactive_customer = $this->quick_books->inactive_customer($advertiser->advertiser_qb_id);
+		$qb_inactive_customer = $this->quick_books->inactive_customer($advertiser->user_qb_id);
 
 		if ($qb_inactive_customer['error'] == false) {
 
-			$result = $this->crud_model->delete_data('advertisers',$where);
+			$result = $this->crud_model->delete_data('users',$where);
 
 		}else{
 

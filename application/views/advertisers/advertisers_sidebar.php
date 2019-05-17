@@ -1,3 +1,6 @@
+<?php
+if (has_permission("advertiser_sidebar")) {
+	?>
  <li class="">
    <a href="#">
     My Advertiser
@@ -13,6 +16,12 @@
   All Advertisers
 </a>
 </li>
+<?php
+
+}
+?>
+
+
 
 <li>
  <a href="<?php echo base_url() ?>advertisers/view_advertisements">

@@ -18,6 +18,9 @@ function get_role_byid($id)
 		case '5':
 		return "Location Manager";
 		break;
+		case '6':
+		return "Advertisor";
+		break;
 		default:
 		return "";
 		break;
@@ -175,4 +178,81 @@ function detect_status_change($status){
 
 		return "disapproved";
 	}
+}
+
+if (!function_exists('modal_anchor')) {
+
+    function modal_anchor($url, $title = '', $attributes = '') {
+        $attributes["data-act"] = "ajax-modal";
+        if (get_array_value($attributes, "data-modal-title")) {
+            $attributes["data-title"] = get_array_value($attributes, "data-modal-title");
+        } else {
+            $attributes["data-title"] = get_array_value($attributes, "title");
+        }
+        $attributes["data-action-url"] = $url;
+
+        return js_anchor($title, $attributes);
+    }
+
+}
+
+
+function generateGalleryID()
+{
+	$v1=rand(1111,9999);
+	$v2=rand(1111,9999);
+    $v3=$v1.$v2;
+   
+    $v3=md5($v3);
+
+    return $v3;
+}
+
+
+function in_array_r($needle, $haystack, $strict = false) {
+    foreach ($haystack as $item) {
+        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+function deleteDir($dirPath) {
+    if (! is_dir($dirPath)) {
+        throw new InvalidArgumentException("$dirPath must be a directory");
+    }
+    if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+        $dirPath .= '/';
+    }
+    $files = glob($dirPath . '*', GLOB_MARK);
+    foreach ($files as $file) {
+        if (is_dir($file)) {
+            deleteDir($file);
+        } else {
+            unlink($file);
+        }
+    }
+    rmdir($dirPath);
+}
+
+function getImpressionForAdvertisor(){
+
+
+		$ci = &get_instance();
+		$userid = get_user_id();
+		$impressions = 0;
+
+		$advertisements = $ci->crud_model->get_data('advertisements',array("advertiser_id"=>$userid));
+
+		foreach ($advertisements as $key => $value) {
+			
+			$impressions += $value->impressions;
+		}
+
+		return $impressions;
+
+
 }

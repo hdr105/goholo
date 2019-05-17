@@ -96,4 +96,6 @@ defined('HOLOGRAM_FILE_UPLOAD_PATH')      OR define('HOLOGRAM_FILE_UPLOAD_PATH',
 defined('PROOF_UPLOAD_PATH')      OR define('PROOF_UPLOAD_PATH', 'assets/files/manager/'); 
 
 defined('ADVERT_NUMBER_PREFIX')      OR define('ADVERT_NUMBER_PREFIX', 'AD'); 
-defined('LOCATION_NUMBER_PREFIX')      OR define('LOCATION_NUMBER_PREFIX', 'LOC'); 
+defined('LOCATION_NUMBER_PREFIX')      OR define('LOCATION_NUMBER_PREFIX', 'LOC');
+define("APP_ID", "7dcd93c0");
+define("APP_KEY", "c06f3ab343536103c13a3a16371b4790");

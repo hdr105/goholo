@@ -1,0 +1,379 @@
+/*================================================================================
+	Item Name: Modern Admin - Clean Bootstrap 4 Dashboard HTML Template
+	Version: 1.0
+	Author: PIXINVENT
+	Author URL: http://www.themeforest.net/user/pixinvent
+================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+@font-face {
+  font-family: Montserrat-Bold;
+  src: url(../../fonts/Montserrat-Bold.otf);
+}
+@font-face {
+  font-family: Montserrat-Light;
+  src: url(../../fonts/Montserrat-Light.otf);
+}
+@font-face {
+  font-family: Montserrat-Regular;
+  src: url(../../fonts/Montserrat-Regular.otf);
+}
+@font-face {
+  font-family:Montserrat-SemiBold;
+  src: url(../../fonts/Montserrat-SemiBold.otf);
+}
+@font-face {
+  font-family:NexaRustSans-Black;
+  src: url(../../fonts/NexaRustSans-Black.otf);
+}
+@font-face {
+  font-family: Oswald-Bold;
+  src: url(../../fonts/Oswald-Bold.ttf);
+}
+@font-face {
+  font-family: Oswald-Light;
+  src: url(../../fonts/Oswald-Light.ttf);
+}
+@font-face {
+  font-family: Oswald-Medium;
+  src: url(../../fonts/Oswald-Medium.ttf);
+}
+@font-face {
+  font-family: Oswald-Regular;
+  src: url(../../fonts/Oswald-Regular.ttf);
+}
+.pb17{
+	padding-bottom: 27px!important;
+}
+.pt-6{
+	    padding-top: 6rem!important;
+}
+.showdiv{
+	display: block!important;
+}
+.hide_div{
+	display: none;
+}
+.bg_color{
+	background-color: #ededed;
+}
+.header{
+	background-color: #fff;
+		padding: 10px;
+	    box-shadow: 0 1px 15px rgba(0,0,0,.04), 0 1px 6px rgba(0,0,0,.04);
+}
+.main-sidebar{
+	
+	background-color: #fff;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+    min-height: 100%;
+}
+.log_out ,.time{
+	margin-left: 10px;
+	margin-right: 20px;
+	padding-left: 10px;
+}
+.margin0{
+	margin: 0px!important;
+}
+.padding0{
+	padding: 0px!important;
+}
+.center_img{
+display: grid;
+justify-content: center;
+align-items: center;
+}
+.bgd-blue{
+	background-color: #4c8fc4;
+}
+.p10{
+	padding: 10px!important;
+}
+.border_radius{
+	border-radius: 5px!important;
+}
+.border_radius_r{
+	  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.header_time{
+	color:#7e7e7e;
+	font-size: 16px;
+	font-family: Oswald-Bold;
+}
+.header_username{
+	color: #c5c5c5;
+	font-size: 16px;
+	font-family: Oswald-Bold;
+
+}	
+.lg_nmbr{
+	font-family: Oswald-Regular;
+	font-size: 38px;
+	color: #f9f9f9;
+	padding-left: 5px;
+	padding-right: 10px;
+	padding-top: 6px;
+}
+.title{
+	font-family:  Montserrat-Bold;
+	font-size: 14px;
+	color: #4f5053;
+}
+.percent_nmbr{
+	font-family: Montserrat-Regular;
+	font-size: 30px;
+	color: #4f5053;
+}
+.brdr_right{
+    border-right: 2px solid #939393;   
+}
+
+.btn-min-width-cs {
+    min-width: 13.5rem;
+}
+
+.btn-custom-hvr:hover {
+    color: #FFF;
+    background-color: #529bd4!important;
+    border-color: #529bd4!important;
+}
+.pink_bdg{
+	background-color: #ff00b7;
+	color: #fff;
+}
+.menu_title{
+	font-family: Oswald-Light;
+	font-size: 14px;
+}
+.pt50{
+	padding-top: 30px!important;
+}
+
+.header_circle{
+	    width: 40px!important;
+    background: #529bd4;
+    color: #fff;
+    justify-content: center;
+    height: 40px!important;
+    text-align: center;
+    font-size: 17px;
+    border-radius: 50%;
+    padding-top: 5px;
+    max-width: 100%;
+}
+.plr0{
+	padding-right: 0px!important;
+	padding-left: 0px!important;
+}
+.plr20{
+	padding-right: 20px!important;
+	padding-left: 20px!important;
+}
+.pr40{
+	padding-right: 40px!important;
+}
+.menubar{
+	    width: 100px;
+}
+.ml100{
+	margin-left: 100px!important;
+}
+.pl0{
+	padding-left: 0px!important;
+}
+.mlr0{
+	margin-left: 0px!important;
+	margin-right: 0px!important;
+}
+.mr0{
+	margin-right: 0px!important
+}
+.border_video{
+	border: 4px dashed #b4b9be;
+    height: 200px;
+}
+
+@media (min-width: 320px) and (max-width: 480px){
+	.width327sm{
+		width: 327px!important;
+	}
+	.text-center-sm{
+		text-align: center!important;
+	}
+	.mr15sm{
+		margin-right: 15px!important;
+	}
+	.font11sm{
+		font-size: 11px!important;
+	}
+	.mt2sm{
+		margin-top: 1.5rem !important;
+	}
+	.pl30sm{
+		padding-left: 30px!important;
+	}
+	.title-sm{
+		margin-left: -30px;
+	}
+	.btn_sm{
+		 top: 10px!important;
+    right: -15px!important;
+	}
+	.btn_sm_per{
+		 top: 10px!important;
+    right: 0px!important;
+	}
+	.ml100{
+		margin-left: 0px!important;
+	}
+	.hm{
+		display: none;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 1023px){
+.pdng0{
+padding:0px!important;
+}
+
+
+}
+
+@media (min-width: 1199px) and (max-width: 1300px){
+	.img_res{
+		width: 35px!important;
+		height: 35px!important;
+
+	}
+	.lg_nmbr{
+		font-size: 34px!important;
+	}
+}
+@media (min-width: 1300px) and (max-width: 1540px){
+	.lg_nmbr{
+		font-size: 38px!important;
+	}
+.img_res{
+		width: 40px!important;
+		height: 40px!important;
+
+	}
+}
+@media (min-width: 991px) and (max-width: 1300px){
+
+.img-ico{
+	width: 80px!important;
+	height: 80px!important;
+}
+.percent_nmbr{
+	font-size: 34px!important;
+}
+}
+.sidenav {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding-top: 60px;
+}
+.faceheading{
+	font-size: 24px!important;
+	color: #4f5053!important;
+	font-family: Montserrat-Regular;
+
+}
+.vertical_middle{
+	vertical-align: middle;
+	line-height: 56px;
+}
+.ptb20{
+	padding-top: 20px!important;
+	padding-bottom: 20px!important;
+}
+.bg264157{
+	background: #264157!important;
+}
+
+/*sami*/
+ .circle{
+     width:60px;
+     height:60px;
+     background-color:#AAAAAA;
+}
+.center_img{
+	justify-items: center;
+	display: grid;
+}
+.pt36{
+	padding-top: 36px;
+}
+.mt_36{
+	margin-top: -36px!important;
+}
+.pr30{
+	padding-right: 30px!important;
+}
+.text498bbe{
+	color: #498bbe!important;
+}
+.border498bbe{
+border:2px solid #498bbe!important;
+}
+.font20{
+	font-size: 20px!important;
+}
+@media(min-width: 1200px) and (max-width: 1490px){
+	.font12md{
+		font-size: 12px!important;
+	}
+	.pmd{
+		padding: 17px 6px 17px 6px !important;
+	}
+	.pl0md{
+		padding-left: 0px!important;
+	}
+		.font12{
+		font-size: 10px!important;
+	}
+}
+.border0{
+	border:0px!important; 
+}
+.font12{
+	font-size: 12px;
+}
+@media(min-width: 1200px) and (max-width: 1254px){
+	.pr0a{
+		padding-right: 0px!important;
+	}
+}
+
+
+@media (min-width: 992px) and (max-width: 1252px){
+	.img-ico {
+
+    width: 60px !important;
+    height: 60px !important;
+
+}
+.faceheading{
+	font-size: 18px !important;	
+}
+}
+
+.font11{
+	font-size: 11px !important
+}

@@ -75,6 +75,11 @@ class Designer extends GH_Controller {
 
 		$this->data['task_id']  = $task_id;
 
+		// echo "<pre>";
+		// echo $this->db->last_query();
+		// print_r($this->data['task']);
+		// exit();
+
 		$this->load->view('common/header',$this->data);
 		$this->load->view('common/sidebar',$this->data);
 		$this->load->view('designer/tasks_assigned');

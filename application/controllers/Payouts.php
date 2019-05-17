@@ -54,15 +54,20 @@ class Payouts extends GH_Controller {
 
 			if ($member_role == 2) {
 
-				$where['location_owner'] = $user_id;
+				$where['l.location_owner'] = $user_id;
 
 			}elseif ($member_role == 1 || $member_role == 3) {
 
-				$where['created_by'] = $user_id;
+				$where['l.created_by'] = $user_id;
 
 			}
 
-			$locations = $this->crud_model->get_data("locations",$where);
+
+			$join['packages p'] = "ad.package_id=p.package_id";
+			$join['locations l'] = "ad.location_id=l.location_id"; 
+
+			$locations = $this->crud_model->get_data("advertisements ad",array(),'',$join);
+
 
 			$net_royalty = 0;
 			$total_paid = 0;
@@ -72,7 +77,7 @@ class Payouts extends GH_Controller {
 				
 				if ($member_role == 2) {
 					
-					$value->user_royalty = ($value->monthly_cost*$value->owner_royalty)/100;
+					$value->user_royalty = ($value->total_cost*$value->owner_royalty)/100;
 
 					if ($value->owner_royalty_status == 0) {
 					$remaining += $value->user_royalty;
@@ -82,7 +87,7 @@ class Payouts extends GH_Controller {
 
 				}elseif ($member_role == 1 || $member_role == 3) {
 
-					$value->user_royalty = ($value->monthly_cost*$value->advert_royalty)/100;
+					$value->user_royalty = ($value->total_cost*$value->advert_royalty)/100;
 
 					if ($value->advert_royalty_status == 0) {
 					$remaining += $value->user_royalty;
@@ -138,7 +143,7 @@ class Payouts extends GH_Controller {
 			$member_role = get_user_role($user_id);
 
 			$where['ad.created_by'] = $user_id;
-			$join['locations l'] = "ad.location_id=l.location_id"; 
+			$join['packages p'] = "ad.package_id=p.package_id"; 
 			$advert = $this->crud_model->get_data("advertisements ad",$where,'',$join);
 
 			$net_commission = 0;
@@ -157,7 +162,7 @@ class Payouts extends GH_Controller {
 
 				$qty = (int)abs((strtotime($start_date) - strtotime($end_date))/(60*60*24*30));
 				
-				$cost = $value->monthly_cost*$qty;
+				$cost = $value->total_cost*$qty;
 
 				$user_commission = get_user_commission($user_id);
 

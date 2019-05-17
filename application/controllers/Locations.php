@@ -28,15 +28,6 @@ class Locations extends GH_Controller {
 	}
 
 
-	public function test(){
-
-		$this->load->library("PhpMailerLib");
-		$mail = $this->phpmailerlib->welcome_email(array("email"=>"haadi.javaid@gmail.com",'first_name'=>"Haider","last_name"=>"Javaid"));
-
-		die;
-
-	}
-
 	public function index()
 	{
 
@@ -190,25 +181,25 @@ class Locations extends GH_Controller {
 
 					if ($location_id != "") {
 						$edit = true;
+						
+						//$qb_update_item = $this->quick_books->update_item($form_data);
 
-						$qb_update_item = $this->quick_books->update_item($form_data);
-
-						if ($qb_update_item['error'] == false) {
+						//if ($qb_update_item['error'] == false) {
 
 							$where['location_id'] = $form_data['location_id'];
 
 							unset($form_data['location_id']);
 
 							$location = $this->crud_model->update_data($this->table,$where,$form_data);
-						}else{
-							$location = false;
-							$msg = $qb_update_item['msg'];
-						}
+						// }else{
+						// 	$location = false;
+						// 	$msg = $qb_update_item['msg'];
+						// }
 					}else{
 
-						$qb_add_item = $this->quick_books->add_item($form_data);
-						if ($qb_add_item['error'] == false) {
-							$form_data['location_qb_id'] = $qb_add_item['msg'];
+						// $qb_add_item = $this->quick_books->add_item($form_data);
+						// if ($qb_add_item['error'] == false) {
+						// 	$form_data['location_qb_id'] = $qb_add_item['msg'];
 							$form_data['created_by'] = get_user_id();
 
 							$form_data['location_number'] = LOCATION_NUMBER_PREFIX.mt_rand(100000, 999999); 
@@ -235,12 +226,12 @@ class Locations extends GH_Controller {
 							$this->add_notifications($notify,'1');
 
 
-						}else{
+						// }else{
 
-							$location = false;
-							$msg = $qb_add_item['msg'];
+						// 	$location = false;
+						// 	$msg = $qb_add_item['msg'];
 
-						}
+						// }
 					}
 
 					
@@ -330,18 +321,37 @@ class Locations extends GH_Controller {
 
 
 
-		if ($user_role != 1) {
+		
 
-			if ($user_role == 3) {
-				$where['l.created_by'] = get_user_id();
-			}elseif ($user_role == 2) {
-				$where['l.location_owner'] = get_user_id();
-			}
+		$this->data['locations'] =  $this->crud_model->get_data("locations l",$where,'',$join,'','*,l.status as location_status,CONCAT(ou.first_name, " " ,ou.last_name) AS owner_name,CONCAT(su.first_name, " " ,su.last_name) AS satff_name,l.created_by as created_by');
+
+	
+		if ($user_role != 1) {
+		foreach ($this->data['locations'] as $key => $value) {
 			
+			if ($user_role == 3) {
+
+			if ($value->created_by != get_user_id() && $value->location_type == 0) {
+				
+				unset($this->data['locations'][$key]);
+			}
+
+			}elseif ($user_role == 2) {
+
+				if ($value->location_owner != get_user_id() && $value->location_type == 0) {
+				
+				unset($this->data['locations'][$key]);
+			}
+
+
+			}
+				
 			
 		}
 
-		$this->data['locations'] =  $this->crud_model->get_data("locations l",$where,'',$join,'','*,l.status as location_status,CONCAT(ou.first_name, " " ,ou.last_name) AS owner_name,CONCAT(su.first_name, " " ,su.last_name) AS satff_name');
+		}
+
+
 
 		$this->load->view('common/header',$this->data);
 		$this->load->view('common/sidebar',$this->data);
@@ -354,20 +364,20 @@ class Locations extends GH_Controller {
 
 		$where['location_id'] = $id;
 
-		$location =  $this->crud_model->get_data($this->table,$where,true,'','','location_qb_id');
+		// $location =  $this->crud_model->get_data($this->table,$where,true,'','','location_qb_id');
 
-		$qb_inactive_location = $this->quick_books->inactive_item($location->location_qb_id);
+		// $qb_inactive_location = $this->quick_books->inactive_item($location->location_qb_id);
 
-		if ($qb_inactive_location['error'] == false) {
+		// if ($qb_inactive_location['error'] == false) {
 
 
 			$result = $this->crud_model->delete_data($this->table,$where);
 
-		}else{
+		// }else{
 
-			$this->session->set_flashdata("error_msg",$qb_inactive_location['msg']);
+		// 	$this->session->set_flashdata("error_msg",$qb_inactive_location['msg']);
 
-		}
+		// }
 
 		redirect($_SERVER['HTTP_REFERER']);
 		
@@ -381,11 +391,11 @@ class Locations extends GH_Controller {
 		$where_query = false;
 		$or_where = false;
 
-		if ($user_role == 2) {
-			$where .= 'location_owner = '.get_user_id();
+		// if ($user_role == 2) {
+		// 	$where .= 'location_owner = '.get_user_id();
 
-			$where_query = true;
-		}
+		// 	$where_query = true;
+		// }
 
 		$filters = $this->input->post('filter');
 
@@ -412,6 +422,32 @@ class Locations extends GH_Controller {
 
 		$locations = $this->location_model->get_location_marker($where); 
 
+		if ($user_role != 1) {
+			foreach ($locations as $key => $value) {
+				
+				if ($user_role == 3) {
+
+				if ($value->created_by != get_user_id() && $value->location_type == 0) {
+					
+					unset($locations[$key]);
+				}
+
+				}elseif ($user_role == 2) {
+
+					if ($value->location_owner != get_user_id() && $value->location_type == 0) {
+					
+					unset($locations[$key]);
+				}
+
+
+				}
+					
+				
+			}
+
+		}
+
+
 		$res = array();
 
 		foreach ($locations as $key => $value) {
@@ -426,8 +462,11 @@ class Locations extends GH_Controller {
 			$locations[$key]->infowindow_content = $this->load->view("location/infowindow_content",$value,true);
 			
 		}
-
+		// echo "<pre>";
+		// print_r($locations);
+		// exit();
 		echo json_encode($locations);
+		exit();
 	}
 
 

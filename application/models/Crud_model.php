@@ -1,6 +1,4 @@
 <?php
-
-
 class Crud_model extends CI_Model{
 
 
@@ -8,7 +6,65 @@ class Crud_model extends CI_Model{
 		parent::__construct();
 
 	}
+//$table,$where = array(),$single_row = false,$join = array(), $like = array(),$select = "*",$or_where = "",$where_in = "", $order_by = ""
 
+	public function get_data_new($args){
+
+		extract($args);
+
+		$select = (isset($select) ? $select : "*");
+		$single_row = (isset($single_row) ? $single_row : false);
+
+		
+		$this->db->select($select);
+		$this->db->from($table);
+
+		if (!empty($join)) {
+			foreach ($join as $key => $value) {
+				$this->db->join($key,$value,'left');
+			}
+		}
+
+		if (!empty($where)) {
+			$this->db->where($where);
+		}
+
+
+		if (!empty($or_where)) {
+			$this->db->or_where($or_where);
+		}		
+		
+		if (!empty($where_in)) {
+			
+			foreach ($where_in as $key => $value) {
+				$this->db->where_in($key, $value);
+			}
+			
+		}
+
+		if (!empty($like)) {
+			$this->db->like($like);
+		}
+
+		if ($single_row) {
+			
+			$res = $this->db->get()->row();
+
+		}else{
+
+			if (!empty($order_by)) {
+				$this->db->order_by($order_by);
+			}
+
+			
+
+			$res = $this->db->get()->result();
+
+		}
+
+		return $res;
+
+	}
 
 	public function get_data($table,$where = array(),$single_row = false,$join = array(), $like = array(),$select = "*",$or_where = "",$where_in = "", $order_by = "" ){
 
@@ -73,19 +129,31 @@ class Crud_model extends CI_Model{
 	}
 
 
-	public function add_data($table,$data){
+	public function add_data($table,$data,$batch = false){
 
-		$res = $this->db->insert($table, $data);
+		if ($batch) {
+			$res =  $this->db->insert_batch($table, $data); 
+		}else{
+			$res = $this->db->insert($table, $data);
+		}
+
+		
 
 		return $this->db->insert_id();
 
 	}
 
 
-	public function update_data($table,$where,$data){
+	public function update_data($table,$where,$data,$batch = false){
 
-		$this->db->where($where);
-		$res = $this->db->update($table, $data);
+		if ($batch) {
+			$res = $this->db->update_batch($table,$data,$where);
+		}else{
+			$this->db->where($where);
+			$res = $this->db->update($table, $data);
+		}
+
+		
 
 		return $res;
 	}

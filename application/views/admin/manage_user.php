@@ -79,6 +79,7 @@
 										<option value="3">Marketing Team</option>
 										<option value="4">Designer</option>
 										<option value="5">Location Manager</option>
+										<option value="6">Advertisor</option>
 									</select>
 								</div>
 							</div>

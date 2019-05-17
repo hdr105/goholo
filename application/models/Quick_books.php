@@ -43,23 +43,23 @@ class Quick_books extends Settings_model{
 
 		$theResourceObj = Customer::create([
 			"BillAddr" => [
-				"Line1" => $data['advertiser_street'],
-				"City" => $data['advertiser_city'],
-				"Country" => $data['advertiser_country'],
-				"PostalCode" => $data['advertiser_post_code']
+				"Line1" => $data['street'],
+				"City" => $data['city'],
+				"Country" => $data['country'],
+				"PostalCode" => $data['post_code']
 			],
-			"GivenName" => $data['advertiser_first_name'],
-			"FamilyName" => $data['advertiser_last_name'],
-			"DisplayName" => $data['advertiser_first_name'].' '.$data['advertiser_last_name'],
-			"CompanyName" => $data['advertiser_company_name'],
+			"GivenName" => $data['first_name'],
+			"FamilyName" => $data['last_name'],
+			"DisplayName" => $data['first_name'].' '.$data['last_name'],
+			"CompanyName" => $data['company_name'],
 			"PrimaryPhone" => [
-				"FreeFormNumber" => $data['advertiser_phone_number']
+				"FreeFormNumber" => $data['phone_number']
 			],
 			"PrimaryEmailAddr" => [
-				"Address" => $data['advertiser_email']
+				"Address" => $data['email']
 			],
 			"WebAddr" => [
-				"URI" => $data['advertiser_website']
+				"URI" => $data['website']
 			]
 		]);
 
@@ -86,23 +86,23 @@ class Quick_books extends Settings_model{
 
 		$this->refresh_token();
 
-		$customer = $this->dataService->FindbyId('customer', $data['advertiser_qb_id']);
+		$customer = $this->dataService->FindbyId('customer', $data['user_qb_id']);
 
 		$theResourceObj = Customer::update($customer  , [
 			"BillAddr" => [
-				"Line1" => $data['advertiser_street'],
-				"City" => $data['advertiser_city'],
-				"Country" => $data['advertiser_country'],
-				"PostalCode" => $data['advertiser_post_code']
+				"Line1" => $data['street'],
+				"City" => $data['city'],
+				"Country" => $data['country'],
+				"PostalCode" => $data['post_code']
 			],
-			"GivenName" => $data['advertiser_first_name'],
-			"FamilyName" => $data['advertiser_last_name'],
-			"DisplayName" => $data['advertiser_first_name'].' '.$data['advertiser_last_name'],
+			"GivenName" => $data['first_name'],
+			"FamilyName" => $data['last_name'],
+			"DisplayName" => $data['first_name'].' '.$data['last_name'],
 			"PrimaryPhone" => [
-				"FreeFormNumber" => $data['advertiser_phone_number']
+				"FreeFormNumber" => $data['phone_number']
 			],
 			"PrimaryEmailAddr" => [
-				"Address" => $data['advertiser_email']
+				"Address" => $data['email']
 			]
 		]);
 
@@ -285,8 +285,8 @@ class Quick_books extends Settings_model{
 		$this->refresh_token();
 
 		$theResourceObj = Item::create([
-			"Name" => $data['location_name'],
-			"UnitPrice" => $data['monthly_cost'],
+			"Name" => $data['package_name'],
+			"UnitPrice" => $data['total_cost'],
 			"IncomeAccountRef" => [
 				"value" => "79",
 				"name" => "Sales of Product Income"
@@ -296,7 +296,7 @@ class Quick_books extends Settings_model{
 				"name" => "Cost of Goods Sold"
 			],
 			"Type" => "Service",
-			"QtyOnHand" => $data['displays'],
+			"QtyOnHand" => 1,
 		]);
 		$resultingObj = $this->dataService->Add($theResourceObj);
 		$error = $this->dataService->getLastError();
@@ -321,11 +321,11 @@ class Quick_books extends Settings_model{
 
 		$this->refresh_token();
 
-		$item = $this->dataService->FindbyId('item', $data['location_qb_id']);
+		$item = $this->dataService->FindbyId('item', $data['item_qb_id']);
 
 		$theResourceObj = Item::update($item  , [
-			"Name" => $data['location_name'],
-			"UnitPrice" => $data['monthly_cost'],
+			"Name" => $data['package_name'],
+			"UnitPrice" => $data['total_cost'],
 			"IncomeAccountRef" => [
 				"value" => "79",
 				"name" => "Sales of Product Income"
@@ -335,7 +335,7 @@ class Quick_books extends Settings_model{
 				"name" => "Cost of Goods Sold"
 			],
 			"Type" => "Service",
-			"QtyOnHand" => $data['displays'],
+			"QtyOnHand" => 1,
 		]);
 
 
@@ -391,7 +391,6 @@ class Quick_books extends Settings_model{
 	public function add_employee($data){
 
 		$this->refresh_token();
-		
 
 		$theResourceObj = Employee::create([
 			"PrimaryAddr" => [
@@ -581,7 +580,7 @@ class Quick_books extends Settings_model{
 		$tokenEndPointUrl = $this->config->item('qb_tokenEndPointUrl');
 		$grant_type= 'refresh_token';
 
-		$certFilePath = 'quickbooks/auth2/OAuth_2/Certificate/cacert.pem';
+		$certFilePath = APPPATH.'third_party/quickbooks/auth2/OAuth_2/Certificate/cacert.pem';
 
 		$client = new Client($this->qb_client_id, $this->qb_client_secret, $certFilePath);
 
@@ -601,6 +600,7 @@ class Quick_books extends Settings_model{
 			'refreshTokenKey' => $this->qb_refresh_token,
 			'QBORealmID' => $this->qb_realmId,
 			'baseUrl' => "Development"
+			//'baseUrl' => "Production"
 		));
 
 	}

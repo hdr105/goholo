@@ -125,6 +125,139 @@ class Admin extends GH_Controller {
 
 	}
 
+		public function delete_package($id){
+
+			$where['package_id'] = $id;
+
+		$package =  $this->crud_model->get_data("packages",$where,true,'','','item_qb_id');
+
+		 $qb_inactive_package = $this->quick_books->inactive_item($package->item_qb_id);
+
+		if ($qb_inactive_package['error'] == false) {
+
+
+			$result = $this->crud_model->delete_data("packages",$where);
+
+		}else{
+
+			$this->session->set_flashdata("error_msg",$qb_inactive_package['msg']);
+
+		}
+
+
+		if ($result) {
+			
+			redirect($_SERVER['HTTP_REFERER']);
+		}
+		
+
+
+	}
+
+		public function manage_packages($id = ""){
+
+		$form_data = $this->input->post();
+
+		if (!empty($form_data)) {
+			
+			$edit = false;
+
+			$form_data['total_cost'] = ($form_data['total_impressions']*$form_data['cost_per_impression'])+$form_data['hologram_price'];
+
+			if ($form_data['package_id'] != "") {
+				$edit = true;
+				$qb_update_item = $this->quick_books->update_item($form_data);
+				if ($qb_update_item['error'] == false) {
+				$where['package_id'] = $form_data['package_id'];
+				unset($form_data['package_id']);
+
+				$package_id = $this->crud_model->update_data('packages',$where,$form_data);
+			}else{
+				$package_id = false;
+				$msg = $qb_update_item['msg'];
+			}
+
+			}else{
+
+				$qb_add_item = $this->quick_books->add_item($form_data);
+
+				if ($qb_add_item['error'] == false) {
+						$form_data['item_qb_id'] = $qb_add_item['msg'];
+
+				unset($form_data['package_id']);
+
+				$package_id = $this->crud_model->add_data('packages',$form_data);
+
+					}else{
+
+						$package_id = false;
+						$msg = $qb_add_item['msg'];
+
+					}
+
+				//$notify['message'] = $this->lang->line('new_package');
+				//$notify['link'] = "admin/view_resource_center";
+
+				//$this->add_notifications($notify,array("2","3","4","5"));
+			}
+
+			if ($package_id) {
+
+				if (isset($edit)) {
+					$this->session->set_flashdata("success_msg","Package Updated successfully");
+				}else{
+					$this->session->set_flashdata("success_msg","Package created successfully");
+				}
+
+				
+				redirect(base_url()."admin/view_packages");
+
+			}else{
+
+				if (isset($edit)) {
+					if (!isset($msg)) {
+						$msg = "Package Not Updated";
+					}
+				}else{
+					if (!isset($msg)) {
+						$msg = "Package Not created";
+					}
+				}
+
+				$this->session->set_flashdata("error_msg",$msg);
+
+				redirect($_SERVER['HTTP_REFERER']);
+			}
+
+		}
+
+		if ($id != "") {
+			$where['package_id'] = $id;
+
+			$this->data['package'] = $this->crud_model->get_data('packages',$where,true);
+		}
+
+
+
+		$this->load->view('common/header',$this->data);
+		$this->load->view('common/sidebar',$this->data);
+		$this->load->view('packages/manage_packages');
+		$this->load->view('common/footer');
+
+	}
+
+
+	public function view_packages(){
+
+
+		$this->data['packages'] = $this->crud_model->get_data('packages');
+
+		$this->load->view('common/header',$this->data);
+		$this->load->view('common/sidebar',$this->data);
+		$this->load->view('packages/view_packages',$this->data);
+		$this->load->view('common/footer');
+	}
+
 
 	public function change_record_status(){
 

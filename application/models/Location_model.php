@@ -22,4 +22,6 @@ class Location_model extends Crud_model{
 		return $res;			
 	}
 
+
+	
 }
