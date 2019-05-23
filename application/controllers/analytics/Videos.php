@@ -21,7 +21,13 @@ class Videos extends GH_Controller {
 
 		if (method_exists($this,$method)) {
 			if (!empty($param)) {
-				$this->$method($param[0]);
+
+				if(!isset($param[1])){
+					$this->$method($param[0]);
+				}else{
+					$this->$method($param[0],$param[1]);
+				}
+				
 			}else{
 				$this->$method();
 			}
