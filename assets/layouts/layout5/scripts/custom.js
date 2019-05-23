@@ -368,15 +368,7 @@ function initMap() {
             var infowindow = new google.maps.InfoWindow();
 
             $.each(res,function(k,v){
-              // console.log(v);
 
-        // var marker = new google.maps.Marker({
-        //   position: v.lat_lng,
-        //   map: map,
-        //   title: 'Hello World!',
-        //   // html: v.infowindow_content,
-        //   icon: base_url+"assets/images/marker.png"
-        // });
         let bounds = new google.maps.LatLngBounds();
 
 
@@ -522,6 +514,7 @@ function initMap() {
       }
 
       function change_map_location(){
+
         var place = autocomplete.getPlace();
 
         var pos = {
@@ -533,6 +526,8 @@ function initMap() {
       }
 
       function location_map(){
+
+
         map = new google.maps.Map(document.getElementById('location_map'),
           mapOptions);
 
@@ -548,18 +543,44 @@ function initMap() {
         };
 
 
-        map.setCenter(pos);
+          $.ajax({
+          url: base_url+"locations/get_location_marker",
+          data:{
+            location_id: $(".location_id").val()
+          },
+          type:"post",
+          success:function(res){
+            res =  JSON.parse(res);
+            infowindow_content = res[0]['infowindow_content'];
+              var infowindow = new google.maps.InfoWindow();
 
-        // var marker = new google.maps.Marker({
-        //   position: pos,
-        //   map: map,
-        // });
-
+    
         var latLng = new google.maps.LatLng(lat,lng);
 
         var marker = new CustomMarker(latLng, map, {
+          html: infowindow_content ,
           cost: $(".cost").val()
         });
+
+
+         marker.addListener('click', function() {
+            
+            var html =  this.args.html;
+            infowindow.setContent(html);
+            jQuery(".location_info").find(".html5lightbox").html5lightbox();
+            infowindow.open(map, marker);
+
+        });
+map.setCenter(pos);
+
+          }
+
+        });
+
+
+      
+
+           
 
 
       }    

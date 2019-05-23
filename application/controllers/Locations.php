@@ -391,11 +391,14 @@ class Locations extends GH_Controller {
 		$where_query = false;
 		$or_where = false;
 
-		// if ($user_role == 2) {
-		// 	$where .= 'location_owner = '.get_user_id();
+		$location_id = $this->input->post('location_id');
 
-		// 	$where_query = true;
-		// }
+		if ($location_id != "") {
+			
+			$where .= 'location_id = '.$location_id;
+
+			$where_query = true;
+		}
 
 		$filters = $this->input->post('filter');
 

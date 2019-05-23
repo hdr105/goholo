@@ -111,6 +111,42 @@
 						</div>
 					</div>
 				</div>
+
+					<div class="row">
+
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<b class="col-md-4">Total Views:</b>
+							<div class="col-md-8">
+								<p> <?=$locations->total_impressions?> </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<b class="col-md-4">Current Views:</b>
+							<div class="col-md-8">
+								<p> <?=$locations->impressions?></p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<b class="col-md-4">Views Remaining:</b>
+							<div class="col-md-8">
+								<p> <?=$locations->total_impressions-$locations->impressions?></p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+<hr>
 				<?php
 				if (!empty($delivery_file)) {
 					?>
@@ -226,6 +262,7 @@
 						<input type="hidden" class="lat" value="<?php echo $locations->location_lat?>">
 						<input type="hidden" class="lng" value="<?php echo $locations->location_lng?>">
 						<input type="hidden" class="cost" value="<?php echo $locations->total_cost?>">
+						<input type="hidden" class="location_id" value="<?php echo $locations->location_id?>">
 
 						<div id="location_map" style="height: 400px"></div>
 					</div>

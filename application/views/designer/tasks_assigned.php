@@ -198,6 +198,7 @@
 						<input type="hidden" class="lat" value="<?php echo $task->location_lat?>">
 						<input type="hidden" class="lng" value="<?php echo $task->location_lng?>">
 						<input type="hidden" class="cost" value="<?php echo $task->monthly_cost?>">
+						<input type="hidden" class="location_id" value="<?php echo $task->location_id?>">
 
 						<div id="location_map" style="height: 400px"></div>
 					</div>

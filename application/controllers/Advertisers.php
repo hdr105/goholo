@@ -289,7 +289,7 @@ class Advertisers extends GH_Controller {
 						$this->session->set_flashdata("error_msg",$msg);
 					}
 
-					redirect($_SERVER['HTTP_REFERER']);
+					//redirect($_SERVER['HTTP_REFERER']);
 				}
 			}
 		}
@@ -365,10 +365,7 @@ class Advertisers extends GH_Controller {
 		}
 
 		$this->data['locations'] =  $this->crud_model->get_data("advertisements ad",$where,true,$join,'','*,ad.status as advert_status');
-		// echo "<pre>";
-		// echo $this->data['locations']->location_street;
-		// print_r($this->data['locations']);
-		// exit();
+		
 		$this->load->view('common/header',$this->data);
 		$this->load->view('common/sidebar',$this->data);
 		$this->load->view('advertisers/view_advertisements_info',$this->data);
