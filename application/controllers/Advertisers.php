@@ -28,6 +28,8 @@ class Advertisers extends GH_Controller {
 
 		$form_data = $this->input->post();
 
+
+		
 		if (!empty($form_data)) {
 
 			$user_role = get_user_role();
@@ -199,7 +201,11 @@ class Advertisers extends GH_Controller {
 
 						$task['task_type'] = "add_advert";
 
-						$task['date'] = date('Y-01-m', $start_timestamp);
+						//$task['date'] = date('Y-01-m', $start_timestamp);
+
+					   $start_date=date_create($form_data['start_date']);
+
+						$task['date'] = date_format($start_date,"Y-d-m");
 
 						$task1 = $this->crud_model->add_data('tasks',$task);
 
@@ -216,27 +222,30 @@ class Advertisers extends GH_Controller {
 
 
 
-						$task['task_type'] = "remove_advert";
+						// $task['task_type'] = "remove_advert";
 
-						$task['date'] = date('Y-01-m', $end_timestamp);
+						// $task['date'] = date('Y-01-m', $end_timestamp);
 
-						$task2 = $this->crud_model->add_data('tasks',$task);
+						// $task2 = $this->crud_model->add_data('tasks',$task);
 
-						if ($task2) {
+						// if ($task2) {
 
 
-							$notify['message'] = $this->lang->line('new_task_added_manager');
-							$notify['link'] = "location_manager";
+						// 	$notify['message'] = $this->lang->line('new_task_added_manager');
+						// 	$notify['link'] = "location_manager";
 
-							$this->add_notifications($notify,'5');
+						// 	$this->add_notifications($notify,'5');
 
-							$this->add_notifications($notify,'1');
-						}
+						// 	$this->add_notifications($notify,'1');
+						// }
 
 						if ($form_data['hologram_type'] == 2) {
 							$task['task_type'] = "designer";
 
-							$task['date'] = date('Y-01-m', $start_timestamp);
+							//$task['date'] = date('Y-01-m', $start_timestamp);
+
+							$start_date=date_create($form_data['start_date']);
+						    $task['date'] = date_format($start_date,"Y-d-m");
 
 							$task3 = $this->crud_model->add_data('tasks',$task);
 
@@ -545,6 +554,59 @@ class Advertisers extends GH_Controller {
 
 		redirect($_SERVER['HTTP_REFERER']);
 
+	}
+
+
+	public function advertisementReport($advert_id){
+
+
+		$this->load->model("video_model");
+
+
+		$advert_videos = $this->crud_model->get_data("advert_video_relation",array('advert_id'=>$advert_id),'','','','video_id');
+
+		$video_ids = array();
+
+
+		foreach ($advert_videos as $key => $value) {
+			
+			$video_ids[] = $value->video_id;
+		}
+
+
+		$analytics_param = array('video_ids'=>$video_ids);
+	
+		$data['analytics'] = $this->video_model->get_analytics($analytics_param);
+
+		$join['locations'] = "locations.location_id=advertisements.location_id";	
+
+		$data['analytics']['add'] = $this->crud_model->get_data("advertisements",array('advert_id'=>$advert_id),true,$join);
+
+
+		$this->load->library('Dom_pdf');
+
+		 $this->load->view('analytics/report',$data);
+
+		
+		$html = $this->output->get_output();
+
+		 $this->dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $this->dompdf->setPaper('A4', 'portrait');
+
+        $this->dompdf->set_option('enable_html5_parser', TRUE);
+
+        $this->dompdf->set_option('isPhpEnabled', true);
+
+        $this->dompdf->set_option('defaultFont', 'Montserrat');
+
+        // Render the HTML as PDF
+        $this->dompdf->render();
+
+        $this->dompdf->stream("dompdf_out.pdf", array("Attachment" => 1));
+
+		//exit(0);
 	}
 
 }

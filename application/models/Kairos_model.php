@@ -39,6 +39,7 @@ class Kairos_model  extends Video_model
 			$this->update_data($this->table,'faceID',$this->updateData,true);
 		}
 
+		$args = array();
 
 		$args['table'] = "videos";
 		$args['where']['galleryID'] = $galleryID; 
@@ -60,8 +61,52 @@ class Kairos_model  extends Video_model
 
 		if ($impressions > 0 && $locationID != "") {
 			$this->db->where('location_id', $locationID);
+			$this->db->where('status', 1);
 			$this->db->set("impressions","impressions + ".$impressions , false);
 			$this->db->update('advertisements');
+
+			$args = array();
+
+			$args['table'] = "advertisements";
+			$args['where']['location_id'] = $locationID;
+			$args['join']['packages'] = 'packages.package_id=advertisements.package_id'; 
+
+			$adds = $this->crud_model->get_data_new($args);
+
+			$advert_video_relation = array();
+
+			foreach ($adds as $key => $value) {
+				
+				$tmp_relation = array();	
+
+				$tmp_relation['video_id'] = $videoID;
+				$tmp_relation['advert_id'] = $value->advert_id;
+
+				array_push($advert_video_relation, $tmp_relation);
+
+				if ($value->impressions == $value->total_impressions || $value->impressions > $value->total_impressions ) {
+					
+					$this->db->where('advert_id', $value->advert_id);
+					$this->db->set('status', 2);
+					$this->db->set('end_date', date('Y-d-m'));
+					$this->db->update('advertisements');
+
+					$task['task_type'] = "remove_advert";
+					$task['date'] = date('Y-d-m', strtotime(' +1 day'));
+					$task['advert_id'] = $value->advert_id;
+
+					$task2 = $this->crud_model->add_data('tasks',$task);
+
+				}
+
+
+			}
+
+			if (!empty($advert_video_relation)) {
+				
+				$this->add_data('advert_video_relation',$advert_video_relation,true);
+
+			}
 
 		}
 
