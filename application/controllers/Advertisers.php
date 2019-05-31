@@ -604,7 +604,7 @@ class Advertisers extends GH_Controller {
         // Render the HTML as PDF
         $this->dompdf->render();
 
-        $this->dompdf->stream("dompdf_out.pdf", array("Attachment" => 1));
+        $this->dompdf->stream($data['analytics']['add']->advert_number.".pdf", array("Attachment" => 1));
 
 		//exit(0);
 	}
