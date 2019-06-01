@@ -26,15 +26,16 @@
 .nav-name{
 	diplay:inline;
 	font-size:12px; 
-	margin-left:10px;
+	margin-left:8px;
 	margin-right:0px;
-	padding-left:25px;
-	padding-right:25px;
+	padding-left:20px;
+	padding-right:20px;
 	padding-top:12px;
 	padding-bottom:12px;
 	background-color:#67a7d9;
 	border-radius:5px;
 	color:white;
+	font-weight: bold;
 	}
 	.dataresponse{
 font-size:20px; 
@@ -77,7 +78,7 @@ font-size:20px;
 					   <table style="margin-top: -5% ">
 			<td  ><div  class="nav-name"><?=$analytics['add']->location_name?></div></td>
 			<td ><div  class="nav-name"><?=$analytics['add']->start_date?>-<?=$analytics['add']->end_date?></div></td>
-			<td ><div  class="nav-name"><?=$analytics['total_visitors']?> Total Views</div></td>
+			<td ><div style="width: 90px"  class="nav-name"><?=$analytics['total_visitors']?> Total Views</div></td>
 			<td ><div  class="nav-name">Avg.Age <?=$analytics['avg_age']?></div></td>
 			</table>
 <table style="margin-top: 5% ">
@@ -85,7 +86,8 @@ font-size:20px;
 <td width="10">&nbsp;</td>
 <td width="160" ><div class="dataresponse">Ad Response:</div></td>
 <!-- <td width="220"><div class="dataresponse">View Time:</div></td>
- --><td width="200"><div class="dataresponse">Male vs Female:</div></td>
+ --><td width="220"><div class="dataresponse">&nbsp;</div></td>
+<td width="200"><div class="dataresponse">Male vs Female:</div></td>
 </tr>
 <tr>
 <td>&nbsp;</td >
@@ -141,6 +143,27 @@ font-size:20px;
 </tr>			
 		</table>
 </td> -->
+<td>
+		<table>
+		<tr>
+			<td width="30">
+					 <div class="">
+						&nbsp;
+					 </div>
+			</td>
+			<td width="30">
+					 <div class="">
+						 &nbsp; 
+					 </div>
+			</td>
+			<td width="30">
+					 <div class="">
+						&nbsp;
+					 </div>
+			</td>
+</tr>			
+		</table>
+</td>
 <td>
 	<table>
 		<tr>

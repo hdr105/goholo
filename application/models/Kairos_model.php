@@ -88,7 +88,7 @@ class Kairos_model  extends Video_model
 					
 					$this->db->where('advert_id', $value->advert_id);
 					$this->db->set('status', 2);
-					$this->db->set('end_date', date('Y-d-m'));
+					$this->db->set('end_date', date('m/d/Y'));
 					$this->db->update('advertisements');
 
 					$task['task_type'] = "remove_advert";
