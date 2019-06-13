@@ -526,7 +526,7 @@ $config['proxy_ips'] = '';
 
 $config['qb_authorizationRequestUrl'] = "https://appcenter.intuit.com/connect/oauth2";
 
-$config['qb_oauth_scope'] = 'com.intuit.quickbooks.accounting';
+$config['qb_oauth_scope'] = 'com.intuit.quickbooks.accounting com.intuit.quickbooks.payment';
 $config['qb_tokenEndPointUrl'] = 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer';
 
 

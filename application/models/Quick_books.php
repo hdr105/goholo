@@ -605,4 +605,56 @@ class Quick_books extends Settings_model{
 
 	}
 
+
+	public function payments(){
+
+			$this->refresh_token();
+
+		$queryUrl = "https://sandbox.api.intuit.com/quickbooks/v4/payments/charges";
+
+
+		$data = '{
+  "currency": "USD", 
+  "amount": "10.55", 
+  "context": {
+    "mobile": "false", 
+    "isEcommerce": "true"
+  }, 
+  "card": {
+    "name": "emulate=0", 
+    "number": "4111111111111111", 
+    "expMonth": "02", 
+    "address": {
+      "postalCode": "94086", 
+      "country": "US", 
+      "region": "CA", 
+      "streetAddress": "1130 Kifer Rd", 
+      "city": "Sunnyvale"
+    }, 
+    "expYear": "2020", 
+    "cvc": "123"
+  }
+}';
+
+
+		$request = curl_init($queryUrl);
+			// set curl options
+		curl_setopt($request, CURLOPT_POST, true);
+		curl_setopt($request, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($request, CURLOPT_HTTPHEADER, array(
+			"Content-type: application/json",
+			'accept: application/json',
+			'authorization: Bearer '.$this->qb_access_token,
+			'request-id: '. rand()
+		)
+	);
+		curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($request);
+
+		$res =  json_decode( $response);
+echo "<pre>";
+		print_r($res);
+
+	}
+
 }
