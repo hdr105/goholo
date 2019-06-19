@@ -199,7 +199,7 @@ class Crud_model extends CI_Model{
 
 		$payment = $this->quick_books->payment($advert_obj->card_id,round($price, 2));
 
-		if ($payment->status == "CAPTURED") {
+		if (isset($payment->status) && @$payment->status == "CAPTURED") {
 
 			$data['status'] = "success";
 			$data['advert_id'] = $advert_obj->advert_id;
@@ -221,9 +221,17 @@ class Crud_model extends CI_Model{
 			$this->db->set('status', 3);
 			$this->db->update('advertisements');
 
-			$payment_error = $payment->errors;
+			if (isset($payment->errors)) {
+				$payment_error = $payment->errors;
+				$msg = current($payment_error)->moreInfo;
+			}else{
 
-			$this->session->set_flashdata("error_msg", "<b>Payment Error: </b>".current($payment_error)->moreInfo);
+				$msg = $payment->code;
+			}
+
+			
+
+			$this->session->set_flashdata("error_msg", "<b>Payment Error: </b>".$msg);
 		}
 
 
