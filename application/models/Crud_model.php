@@ -136,9 +136,6 @@ class Crud_model extends CI_Model{
 		}else{
 			$res = $this->db->insert($table, $data);
 		}
-
-		
-
 		return $this->db->insert_id();
 
 	}
@@ -149,12 +146,11 @@ class Crud_model extends CI_Model{
 		if ($batch) {
 			$res = $this->db->update_batch($table,$data,$where);
 		}else{
+			
 			$this->db->where($where);
 			$res = $this->db->update($table, $data);
 		}
-
 		
-
 		return $res;
 	}
 
@@ -188,6 +184,83 @@ class Crud_model extends CI_Model{
 		return false;
 
 	}
+
+	public function record_payment($advert_obj){
+
+		$this->db->where('advert_id', $advert_obj->advert_id);
+		$this->db->set('status', 2);
+		$this->db->update('advertisements');
+
+		$price_imp = $this->settings_model->get_value("price_per_impression");
+
+		$unpaid_impressions = $advert_obj->impressions-$advert_obj->paid_impressions;
+
+		$price = $unpaid_impressions*$price_imp;
+
+		$payment = $this->quick_books->payment($advert_obj->card_id,round($price, 2));
+
+		if ($payment->status == "CAPTURED") {
+
+			$data['status'] = "success";
+			$data['advert_id'] = $advert_obj->advert_id;
+			$data['payment_qb_id'] = $payment->id;
+			$data['amount'] = $payment->amount;
+			$data['impressions'] = $unpaid_impressions;
+
+			$this->add_data("payments",$data);
+
+			$this->db->where('advert_id', $advert_obj->advert_id);
+			$this->db->set("paid_impressions","paid_impressions + ".$unpaid_impressions , false);
+			$this->db->update('advertisements');
+
+			return true;
+
+		}else{
+
+			$this->db->where('advert_id', $advert_obj->advert_id);
+			$this->db->set('status', 3);
+			$this->db->update('advertisements');
+
+			$payment_error = $payment->errors;
+
+			$this->session->set_flashdata("error_msg", "<b>Payment Error: </b>".current($payment_error)->moreInfo);
+		}
+
+
+	}
+
+
+	public function get_user_data1($user_id){
+		$query = $this->db->query("SELECT * FROM card_info	 WHERE user_id='$user_id'");
+		$row = $query->result();
+		return $row;
+	}
+	public function get_user_info($user_id){
+		$query = $this->db->query("SELECT * FROM users	 WHERE user_id='$user_id'");
+		$row = $query->result();
+		return $row;
+	}
+	public function update_card_info($user_id,$data){
+			$insertres = $this->get_user_data1($user_id);
+
+			//print_r($insertres);
+			//die;
+			if(empty($insertres)){
+				$result = $this->db->insert('card_info', $data);
+			}else{
+				$this->db->where('user_id', $user_id);
+    			$result = $this->db->update('card_info', $data);
+			}
+
+		
+		if($result){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	
 
 }
 

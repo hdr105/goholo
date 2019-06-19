@@ -116,6 +116,23 @@ function advertiser_company_type(){
   }
 }
 
+function advertiser_packeg_type(){
+
+  var val = $("#advertisment_type").val();
+  if (val == 1) {
+    $(".card_div").slideUp();
+    $(".packeg_div").slideDown();
+    $(".hide_selectpack").slideDown();
+    $(".hide_enddate").slideUp();
+
+  }else if(val == 2){
+    $(".hide_selectpack").slideUp();
+    $(".hide_enddate").slideDown();
+    $(".packeg_div").slideDown();
+    $(".card_div").slideDown();
+  }
+}
+
 
 function initialize() {
 
@@ -151,7 +168,6 @@ let mapOptions = {
 
 function initMap() {
 
-
     var infoWindow = new google.maps.InfoWindow(); // information window ,we will use for our location and for markers
         // set the map to the div with id = map and set the mapOptions as defualt
         map = new google.maps.Map(document.getElementById('map'),
@@ -179,8 +195,7 @@ function initMap() {
 
         InitializeCustomMarker();
 
-
-      }
+}
 
 
       function CustomMarker(latlng, map, args)

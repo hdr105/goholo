@@ -111,6 +111,14 @@ class Users extends GH_Controller {
 						$qb = false;
 					}
 
+				}elseif ($form_data['user_role'] == 6) {
+
+					$qb_update = $this->quick_books->update_customer($form_data);
+
+					if ($qb_update['error'] == true) {
+
+						$qb = false;
+					}
 				}elseif ($form_data['user_role'] != 1) {
 
 					$qb_update = $this->quick_books->update_employee($form_data);
@@ -142,6 +150,17 @@ class Users extends GH_Controller {
 				if ($form_data['user_role'] == 2) {
 
 					$qb_add = $this->quick_books->add_vendor($form_data);
+
+					if ($qb_add['error'] == false) {
+
+						$form_data['user_qb_id'] = $qb_add['msg'];
+					}else{
+
+						$qb = false;
+					}
+				}	elseif ($form_data['user_role'] == 6) {
+
+					$qb_add = $this->quick_books->add_customer($form_data);
 
 					if ($qb_add['error'] == false) {
 

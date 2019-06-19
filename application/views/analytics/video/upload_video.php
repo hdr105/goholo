@@ -43,6 +43,18 @@
                      <?php
                   }
                   ?>
+
+                   <?php
+                  if ($this->session->flashdata("error_msg") != "") {
+                     ?>
+                     <div class="alert alert-danger" role="alert">
+                    <?php echo $this->session->flashdata("error_msg");
+                    ?>
+                  </div>
+
+                     <?php
+                  }
+                  ?>
                 
                      <div class="card  col-12">
                       <div class="table-responsive">

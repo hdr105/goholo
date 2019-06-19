@@ -55,9 +55,7 @@ class Quickbooks extends GH_Controller {
 
 		if (!isset($_GET["code"]))
 		{
-			
-
-			$authUrl = $client->getAuthorizationURL($authorizationRequestUrl, $scope, $redirect_uri, $response_type, $state);
+		$authUrl = $client->getAuthorizationURL($authorizationRequestUrl, $scope, $redirect_uri, $response_type, $state);
 			header("Location: ".$authUrl);
 			exit();
 		}else
@@ -68,9 +66,7 @@ class Quickbooks extends GH_Controller {
 				throw new Exception("The state is not correct from Intuit Server. Consider your app is hacked.");
 			}
 
-
 			$result = $client->getAccessToken($tokenEndPointUrl,  $code, $redirect_uri, $grant_type);
-
    			$this->settings_model->set_value('qb_access_token',$result['access_token']);
    			$this->settings_model->set_value('qb_refresh_token',$result['refresh_token']);
    			$this->settings_model->set_value('qb_realmId',$_GET['realmId']);

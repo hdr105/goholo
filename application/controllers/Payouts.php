@@ -66,18 +66,29 @@ class Payouts extends GH_Controller {
 			$join['packages p'] = "ad.package_id=p.package_id";
 			$join['locations l'] = "ad.location_id=l.location_id"; 
 
-			$locations = $this->crud_model->get_data("advertisements ad",array(),'',$join);
-
+			$locations = $this->crud_model->get_data("advertisements ad",array(),'',$join,array(),'ad.*,l.*,p.*,ad.status as advert_status');
 
 			$net_royalty = 0;
 			$total_paid = 0;
 			$remaining = 0;
 
 			foreach ($locations as $key => $value) {
+
+
+				$total_cost = 0;
+
+				if ($value->advertisment_type == 1) {
+					$total_cost = $value->total_cost;
+				}elseif ($value->advertisment_type == 2 && $value->advert_status == 2) {
+					
+					$total_cost = get_advert_payments($value->advert_id);
+
+					
+				}
 				
 				if ($member_role == 2) {
 					
-					$value->user_royalty = ($value->total_cost*$value->owner_royalty)/100;
+					$value->user_royalty = ($total_cost*$value->owner_royalty)/100;
 
 					if ($value->owner_royalty_status == 0) {
 					$remaining += $value->user_royalty;
@@ -87,7 +98,7 @@ class Payouts extends GH_Controller {
 
 				}elseif ($member_role == 1 || $member_role == 3) {
 
-					$value->user_royalty = ($value->total_cost*$value->advert_royalty)/100;
+					$value->user_royalty = ($total_cost*$value->advert_royalty)/100;
 
 					if ($value->advert_royalty_status == 0) {
 					$remaining += $value->user_royalty;
@@ -102,9 +113,9 @@ class Payouts extends GH_Controller {
 			}
 			$this->data['locations'] = $locations;
 
-			$this->data['net_royalty'] = $net_royalty;
-			$this->data['remaining'] = $remaining;
-			$this->data['total_paid'] = $total_paid;
+			$this->data['net_royalty'] = round($net_royalty,2);
+			$this->data['remaining'] = round($remaining,2);
+			$this->data['total_paid'] =round($total_paid,2);
 
 		}
 
@@ -165,7 +176,16 @@ class Payouts extends GH_Controller {
 				
 				//$cost = $value->total_cost*$qty;
 
-				$cost = $value->total_cost;
+				$cost = 0;
+
+				if ($value->advertisment_type == 1) {
+					$cost = $value->total_cost;
+				}elseif ($value->advertisment_type == 2 && $value->advert_status == 2) {
+					
+					$cost = get_advert_payments($value->advert_id);
+
+					
+				}
 
 				$user_commission = get_user_commission($user_id);
 

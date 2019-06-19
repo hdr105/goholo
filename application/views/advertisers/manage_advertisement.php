@@ -12,6 +12,7 @@
 			<?php
 		}
 		?>
+		<?php //echo validation_errors(); ?>
 	</div>
 	<!-- BEGIN PAGE BASE CONTENT -->
 	<div class="portlet light bordered">
@@ -31,8 +32,11 @@
 					<div class="row">
 						<div class="col-md-6">
 							<?php  $advertiser_type = set_value('advertiser_type');
-							$advertiser_type_error = form_error('advertiser_type');
+								   $advertiser_type_error = form_error('advertiser_type');
+								    $advertisment_type = set_value('advertisment_type');
+
 							?>
+
 							<div class="form-group <?php echo ($advertiser_type_error != '') ? 'has-error' : '' ?> ">
 								<label class="control-label">Advertiser Type
 								</label>
@@ -162,32 +166,62 @@
 
 	
 					<h3 class="form-section">Advertisment Info</h3>
-
+						
 					<div class="row">
-									<div class="col-md-6 package_div" >
-							<?php  $package_id = set_value('package_id');
-							$package_id_error = form_error('package_id');
-							?>
-							<div class="form-group <?php echo ($package_id_error != '') ? 'has-error' : '' ?> ">
+						<div class="col-md-6 " >
+							<div class="form-group ">
+								<label class="control-label">Select Advertisment Type
+								</label>
+								<select id="advertisment_type" name="advertisment_type" class="form-control advertisment_type" onchange="advertiser_packeg_type()">
+									<option value="" selected>Select Advertisment Type</option>
+									<option value="1" >Select Package</option>
+									<option value="2" >Pay as you go</option>
+								</select>
+								<span class="help-block" style="color:red;"> <?php echo form_error('advertisment_type'); ?> </span>
+							</div>
+						</div>		
+					</div>
+
+					<div class='packeg_div' style="display:none;">
+					<div class="row">
+						<div class="col-md-6 package_div hide_selectpack" style="display:none;">
+							<?php
+								$package_id_error = form_error('package_id');
+								?>
+							<div class=" form-group <?php echo ($package_id_error != '') ? 'has-error' : '' ?>" >
 								<label class="control-label">Select Package
 								</label>
 								<select name="package_id" class="form-control package_id">
-									<option value="" <?php echo ($package_id == '') ? 'selected' : '' ?> >Select Package
-									</option>
+									<option value="" >Select Package</option>
 									<?php
-									foreach ($packages as $key => $value) {
+										foreach ($packages as $key => $value) {
 										echo "<option ".($package_id == $value->package_id ? 'selected' : '')." value='".$value->package_id."' >".$value->package_name."  ($".$value->total_cost.")  </option>";
-									}
+										}
 									?>
 								</select>
-								<span class="help-block"> <?php echo $package_id_error;  ?> </span>
+								<span class="help-block" ><?php echo $package_id_error; ?> </span>
 							</div>
 						</div>					
 
 						<div class="col-md-6">
-							<div class="form-group">
+							<?php
+								$start_date_error = form_error('start_date');
+								?>
+							<div class="form-group <?php echo ($start_date_error != '') ? 'has-error' : '' ?>">
 								<label class="control-label">Start Date of Advertisment</label>
 								<input type="text" class="form-control start_date MonthPicker" name="start_date" value="<?php echo (set_value('start_date'));   ?>">
+								<span class="help-block"><?php echo $start_date_error; ?> </span>
+							</div>
+							
+						</div>
+						<div class="col-md-6 hide_enddate" style="display:none;">
+							<?php
+								$end_date_error = form_error('end_date');
+								?>
+							<div class="form-group <?php echo ($end_date_error != '') ? 'has-error' : '' ?>">
+								<label class="control-label">End Date of Advertisment</label>
+								<input type="text" class="form-control end_date MonthPicker" name="end_date" value="<?php echo (set_value('end_date'));   ?>">
+								<span class="help-block"><?php echo $end_date_error; ?> </span>
 							</div>
 						</div>
 						<!--/span-->
@@ -231,15 +265,83 @@
 						</div>
 
 					</div>
+				  </div>
+				  <div class='card_div' style="display:none;">
+				
+						<h3 class="form-section">Card Info</h3>
+							<div class="row">
+									<div class="col-md-6">
+								<?php
+								$name_error = form_error('card[name]');
+								?>
+								<div class="form-group <?php echo ($name_error != '') ? 'has-error' : '' ?>">
+									<label class="control-label">Name</label>
+									<input type="text" id="" class="form-control name" name="card[name]" placeholder="Card Holder Name" value="">
+									<span class="help-block"> <?php echo $name_error; ?> </span>
+								</div>
+							</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label">Card Number</label>
+										<input type="text" id="" class="form-control card_number" name="card[card_number]" placeholder="#####################" value="">
+										<span class="help-block"> <?php echo form_error('card[card_number]'); ?> </span>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2">
+									<div class="form-group">
+										<label class="control-label">Expiry month</label>
+										<select class="form-control card_exp_month" name="card[card_exp_month]">
+											<option value=''>--Select Month--</option>
+											    <option selected value='1'>01</option>
+											    <option value='02'>02</option>
+											    <option value='03'>03</option>
+											    <option value='04'>04</option>
+											    <option value='05'>05</option>
+											    <option value='06'>06</option>
+											    <option value='07'>07</option>
+											    <option value='08'>08</option>
+											    <option value='09'>09</option>
+											    <option value='10'>10</option>
+											    <option value='11'>11</option>
+											    <option value='12'>12</option>
+										</select>
+										<span class="help-block"> <?php echo form_error('card[card_exp_month]'); ?> </span>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<label class="control-label">Expiry year</label>
+										<select class="form-control card_exp_year" name="card[card_exp_year]">
+												<?php 
+												 for ($i=date('Y');$i<=2035;$i++){ 
+											        echo "<option value=".$i.">".$i."</option>n";     
+											        } 
+												?>
+										</select>
+										<span class="help-block"> <?php echo form_error('card[card_exp_year]'); ?> </span>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<label class="control-label">CVV</label>
+										<input type="text" name="card[card_cvv]" class=" form-control card_cvv" value=""/>
+										<span class="help-block"> <?php echo form_error('card[card_cvv]');   ?> </span>
+									</div>
+								</div>
+							</div>
+				  	</div>
 
 				</div>
-				<div class="form-actions right">
-					<input type="hidden" class="hologram_file" name="old_hologram_file">
-					<input type="hidden" class="advert_id" name="advert_id">
-					<input type="hidden" name="location_id" value="<?=$location_id?>">
-					<button type="submit" class="btn blue">
-						<i class="fa fa-check"></i> Save</button>
-					</div>
+						<div class="form-actions right">
+							<input type="hidden" class="hologram_file" name="old_hologram_file">
+							<input type="hidden" class="advert_id" name="advert_id">
+							<input type="hidden" class="card_id" name="card_id">
+							<input type="hidden" name="location_id" value="<?=$location_id?>">
+							<button type="submit" class="btn blue">
+								<i class="fa fa-check"></i> Save</button>
+						</div>
 				</form>
 				<!-- END FORM-->
 			</div>
@@ -255,6 +357,15 @@ if ($advertiser_type != "") {
 	</script>
 	<?php
 }
+if ($advertisment_type != "") {
+	?>
+	<script type="text/javascript">
+		$(".advertisment_type").val("<?=$advertisment_type?>");
+		advertiser_packeg_type();
+	</script>
+	<?php
+}
+
 
 	if (isset($advert) && !empty($advert)) {
 		?>
@@ -262,6 +373,7 @@ if ($advertiser_type != "") {
 			$(document).ready(function(){
 				$("#advertiser_type").val("1");
 				advertiser_company_type();
+
 				<?php
 				foreach ($advert as $key => $value) {
 					?>
@@ -273,9 +385,8 @@ if ($advertiser_type != "") {
 				}
 
 				?>
-
-
 				$(".hologram_type").change();
+				advertiser_packeg_type();
 			});
 		</script>
 		<?php

@@ -37,4 +37,9 @@
  		QuickBooks
  	</a>
  </li>
+ <li>
+ 	<a href="<?php echo base_url() ?>cron_job">
+ 		Cron Job
+ 	</a>
+ </li>
 

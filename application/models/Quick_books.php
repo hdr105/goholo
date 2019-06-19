@@ -605,36 +605,23 @@ class Quick_books extends Settings_model{
 
 	}
 
+	public function payment($card_id,$price){
 
-	public function payments(){
-
-			$this->refresh_token();
-
+	 	$this->refresh_token();
+		
 		$queryUrl = "https://sandbox.api.intuit.com/quickbooks/v4/payments/charges";
+	
+		$data = array('currency'=>"USD","amount"=>$price);
+		$data['context'] = array("mobile"=>"false","isEcommerce"=>"false");
 
 
-		$data = '{
-  "currency": "USD", 
-  "amount": "10.55", 
-  "context": {
-    "mobile": "false", 
-    "isEcommerce": "true"
-  }, 
-  "card": {
-    "name": "emulate=0", 
-    "number": "4111111111111111", 
-    "expMonth": "02", 
-    "address": {
-      "postalCode": "94086", 
-      "country": "US", 
-      "region": "CA", 
-      "streetAddress": "1130 Kifer Rd", 
-      "city": "Sunnyvale"
-    }, 
-    "expYear": "2020", 
-    "cvc": "123"
-  }
-}';
+		$card = $this->get_data('card_info',array("card_id"=>$card_id),true);
+
+		//$data['card'] = array("name"=>$card->name,"number"=>$card->number,"expMonth"=>$card->card_exp_month,"expYear"=>$card->card_exp_year,"cvc"=>$card->card_cvv,"address"=>array("postalCode"=>$card->post_code, "country"=> $card->country,"region"=> $card->region, "streetAddress"=> $card->street,"city"=> $card->city));
+
+		$data['card'] = array("name"=>$card->name,"number"=>$card->card_number,"expMonth"=>$card->card_exp_month,"expYear"=>$card->card_exp_year,"cvc"=>$card->card_cvv);
+
+		$data = json_encode($data);
 
 
 		$request = curl_init($queryUrl);
@@ -652,8 +639,7 @@ class Quick_books extends Settings_model{
 		$response = curl_exec($request);
 
 		$res =  json_decode( $response);
-echo "<pre>";
-		print_r($res);
+		return $res;
 
 	}
 

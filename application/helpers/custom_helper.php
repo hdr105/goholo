@@ -269,3 +269,14 @@ function getBase64Image($url){
 
 
 }
+
+function get_advert_payments($advert_id){
+
+	$ci = &get_instance();
+
+	$payments = $ci->crud_model->get_data('payments',array("advert_id"=>$advert_id),true,array(),array(),'sum(amount) as total_payment');
+
+	return $payments->total_payment;
+
+
+}

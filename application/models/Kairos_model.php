@@ -69,6 +69,7 @@ class Kairos_model  extends Video_model
 
 			$args['table'] = "advertisements";
 			$args['where']['location_id'] = $locationID;
+			$args['where']['advertisements.status'] = 1;
 			$args['join']['packages'] = 'packages.package_id=advertisements.package_id'; 
 
 			$adds = $this->crud_model->get_data_new($args);
@@ -84,7 +85,7 @@ class Kairos_model  extends Video_model
 
 				array_push($advert_video_relation, $tmp_relation);
 
-				if ($value->impressions == $value->total_impressions || $value->impressions > $value->total_impressions ) {
+				if ($value->advertisment_type == 1 && ($value->impressions == $value->total_impressions || $value->impressions > $value->total_impressions)  ) {
 					
 					$this->db->where('advert_id', $value->advert_id);
 					$this->db->set('status', 2);
@@ -97,6 +98,17 @@ class Kairos_model  extends Video_model
 
 					$task2 = $this->crud_model->add_data('tasks',$task);
 
+				}elseif ($value->advertisment_type == 2) {
+					
+					$end_date = $value->end_date;
+					$cur_date = date('m/d/Y');
+
+					if ($end_date == $cur_date) {
+						
+						$this->crud_model->record_payment($value);
+
+						
+					}
 				}
 
 
@@ -123,10 +135,27 @@ class Kairos_model  extends Video_model
 		
 		if ($emotions) {
 
-			$emotions = json_decode($emotions);
-
-			$analytics = $this->analyticsApi($emotions->id,$videoID);
+			$emotions_arr = json_decode($emotions);
+			if (is_object($emotions_arr)) {
+				
+			$analytics = $this->analyticsApi($emotions_arr->id,$videoID);
 		
+			}else{
+
+					$msg = "Kairos Error: Emotions API ".$emotions;
+
+				   if ($this->session->flashdata("error_msg") != "") {
+
+				   		$msg .= "<br>".$this->session->flashdata("error_msg");
+
+
+				   }
+
+				   $this->session->set_flashdata("error_msg",$msg);
+
+				
+
+			}
 		}
 
 	

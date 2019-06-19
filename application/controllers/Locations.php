@@ -31,8 +31,7 @@ class Locations extends GH_Controller {
 	public function index()
 	{
 
-		// $this->quick_books->payments();
-		// die;
+
 
 		$locations = $this->crud_model->get_data($this->table);
 

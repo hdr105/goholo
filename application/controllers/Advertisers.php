@@ -11,7 +11,7 @@ class Advertisers extends GH_Controller {
 		$this->data['menu_class'] = "advertisers_menu";
 		$this->data['title'] = "Advertisers";
 		$this->data['sidebar_file'] = "advertisers/advertisers_sidebar";
-
+		$this->load->model('Quick_books');
 
 	}
 
@@ -28,9 +28,12 @@ class Advertisers extends GH_Controller {
 
 		$form_data = $this->input->post();
 
+	
 
 		
+
 		if (!empty($form_data)) {
+
 
 			$user_role = get_user_role();
 
@@ -45,7 +48,7 @@ class Advertisers extends GH_Controller {
 				$this->form_validation->set_rules('advertiser_id', '*Advertiser', 'required', array(
 					'required' => '%s Missing'
 				));
-			}elseif ($advertiser_type == 2) {
+			}else if ($advertiser_type == 2) {
 
 				$this->form_validation->set_rules('advert[company_name]', '*Company Name', 'required', array(
 					'required' => '%s Missing'
@@ -69,12 +72,86 @@ class Advertisers extends GH_Controller {
 				
 			}
 
-			$result = $this->form_validation->run();
-
+			$this->form_validation->set_rules('advertisment_type', '*Advertisment Type', 'required', array(
+				'required' => '%s Missing'
+			));
+			/////////////////////////
+			// $this->form_validation->set_rules('packeg_type', '*Advertisment Type', 'required', array(
+			// 	'required' => '%s Missing'
+			// ));
 			
+			if($form_data['advertisment_type'] == 1){
+					$this->form_validation->set_rules('start_date', '*Start date', 'required', array(
+					'required' => '%s Missing'
+				));
+
+				$this->form_validation->set_rules('package_id', '*Package', 'required', array(
+					'required' => '%s Missing'
+				));
+				
+			}else if($form_data['advertisment_type'] == 2){
+				$this->form_validation->set_rules('start_date', '*Start date', 'required', array(
+					'required' => '%s Missing'
+				));
+				$this->form_validation->set_rules('end_date', '*End date', 'required', array(
+					'required' => '%s Missing'
+				));
+
+				$this->form_validation->set_rules('card[name]', '*Name', 'required', array(
+					'required' => '%s Missing'
+				));
+				$this->form_validation->set_rules('card[card_number]', '*Card Number', 'required', array(
+					'required' => '%s Missing'
+				));
+				$this->form_validation->set_rules('card[card_exp_month]', '*Expiry month', 'required', array(
+					'required' => '%s Missing'
+				));
+				$this->form_validation->set_rules('card[card_exp_year]', '*Expiry year', 'required', array(
+					'required' => '%s Missing'
+				));
+				$this->form_validation->set_rules('card[card_cvv]', '*CVV', 'required', array(
+					'required' => '%s Missing'
+				));
+
+
+			}
+			$result = $this->form_validation->run();
+		
+			
+			// if($form_data['packeg_type'] == 2){
+			// 			/////////////// Card info store /////////////
+			// 			$quicbookres = $this->Quick_books->card_request_api($form_data);
+						
+			// 			if($quicbookres){
+			// 					$form_data1['name'] = $form_data['name'];
+			// 					$form_data1['card_number'] = $form_data['card_number'];
+			// 					$form_data1['cvc'] = $form_data['card_cvv'];
+			// 					$form_data1['expMonth'] = $form_data['card_exp_month'];
+			// 					$form_data1['expYear'] = $form_data['card_exp_year'];
+			// 					$form_data1['region'] = $form_data['region'];
+			// 					$form_data1['postalCode'] = $form_data['postal_code'];
+			// 					$form_data1['country'] = $form_data['country'];
+			// 					$form_data1['streetAddress'] = $form_data['street'];
+			// 					$form_data1['city'] = $form_data['city'];
+
+			// 					$form_data1['user_id'] = get_user_id();
+			// 					$where['user_id'] = get_user_id();
+
+			// 					$result = $this->crud_model->update_card_info($where['user_id'],$form_data1);
+			// 					if($result){
+			// 						$this->session->set_flashdata("error_msg","Card information store successfully");
+			// 					}
+								
+			// 					//die;
+			// 			}else{
+			// 				$this->session->set_flashdata("error_msg","Quickbook not successfully Update");
+			// 			}
+
+			// 			//////////////////////////////////////////
+			// 	}
+				
 
 			if ($result) {
-
 
 				$qb_customer = true;	
 
@@ -89,12 +166,16 @@ class Advertisers extends GH_Controller {
 					if ($qb_add_customer['error'] == false) {
 
 						$form_data['advert']['user_qb_id'] = $qb_add_customer['msg'];
+
 						
 						$form_data['advert']['created_by'] = get_user_id();
 
 						$form_data['advertiser_id'] = $this->crud_model->add_data("users",$form_data['advert']);
 
-					}else{
+						$form_data['card']['user_id'] = $form_data['advertiser_id'];
+
+					}else{	
+
 
 						$qb_customer = false;
 					}
@@ -102,6 +183,10 @@ class Advertisers extends GH_Controller {
 				}
 
 				if ($qb_customer) {
+
+
+					$form_data['card']['user_id'] = $form_data['advertiser_id'];
+					
 
 				$hologram_file = $this->crud_model->upload_file($_FILES['hologram_file'],'hologram_file',HOLOGRAM_FILE_UPLOAD_PATH);
 
@@ -126,15 +211,25 @@ class Advertisers extends GH_Controller {
 				if ($advert_id != "") {
 					$edit = true;
 
+					$where_card['card_id'] = $form_data['card_id'];
+
+					$card = $this->crud_model->update_data("card_info",$where_card,$form_data['card']);
+
 					$where['advert_id'] = $form_data['advert_id'];
 
 					unset($form_data['advert_id']);
+					unset($form_data['card']);
 
 					$advert = $this->crud_model->update_data($this->table,$where,$form_data);
 
 				}else{
 
-					$package = $this->crud_model->get_data('packages',array("package_id"=>$form_data['package_id']),true);
+
+					$form_data['card_id'] = $this->crud_model->add_data("card_info",$form_data['card']);
+
+
+					unset($form_data['card']);
+					
 
 					$advertiser = $this->crud_model->get_data('users',array("user_id"=>$form_data['advertiser_id']),true);
 
@@ -147,9 +242,14 @@ class Advertisers extends GH_Controller {
 					// $end_timestamp = $end_month->modify('+1 month')->getTimestamp();
 					// $end_date = date('Y-m-01', $end_timestamp);
 
-					//$quick_books_data['qty'] = (int)abs((strtotime($start_date) - strtotime($end_date))/(60*60*24*30));
+					if ($advertisment_type == 1) {
 
-					//$quick_books_data['total_amount'] = $quick_books_data['qty'] * $package->total_cost;
+						$package = $this->crud_model->get_data('packages',array("package_id"=>$form_data['package_id']),true);
+				
+
+					$quick_books_data['qty'] = (int)abs((strtotime($start_date) - strtotime($end_date))/(60*60*24*30));
+
+					$quick_books_data['total_amount'] = $quick_books_data['qty'] * $package->total_cost;
 
 					$quick_books_data['qty'] = 1;
 
@@ -165,6 +265,14 @@ class Advertisers extends GH_Controller {
 
 
 					$qb_add = $this->quick_books->create_invoice($quick_books_data);
+						
+					}else{
+						$qb_add['error'] = false;
+						$qb_add['msg'] = "";
+					}
+
+
+					
 
 					// echo "<pre>";
 					// print_r($qb_add);
@@ -181,7 +289,7 @@ class Advertisers extends GH_Controller {
 
 							$form_data['status'] = 1;
 						}
-
+			
 						$advert = $this->crud_model->add_data($this->table,$form_data);
 
 
@@ -203,9 +311,9 @@ class Advertisers extends GH_Controller {
 
 						//$task['date'] = date('Y-01-m', $start_timestamp);
 
-					   $start_date=date_create($form_data['start_date']);
+					   $start_date= date_create($form_data['start_date']);
 
-						$task['date'] = date_format($start_date,"Y-d-m");
+						$task['date'] = date_format($start_date,"Y-m-d");
 
 						$task1 = $this->crud_model->add_data('tasks',$task);
 
@@ -220,24 +328,32 @@ class Advertisers extends GH_Controller {
 							$this->add_notifications($notify,'1');
 						}
 
+						if($form_data['advertisment_type'] == 2){
+
+							$task['task_type'] = "remove_advert";
+
+							 $end_date=date_create($form_data['end_date']);
+
+							$task['date'] = date_format($end_date,"Y-m-d");
+
+							$task2 = $this->crud_model->add_data('tasks',$task);
+
+							if ($task2) {
 
 
-						// $task['task_type'] = "remove_advert";
+							$notify['message'] = $this->lang->line('new_task_added_manager');
+							$notify['link'] = "location_manager";
 
-						// $task['date'] = date('Y-01-m', $end_timestamp);
+							$this->add_notifications($notify,'5');
 
-						// $task2 = $this->crud_model->add_data('tasks',$task);
+							$this->add_notifications($notify,'1');
+							}
 
-						// if ($task2) {
+						}
 
 
-						// 	$notify['message'] = $this->lang->line('new_task_added_manager');
-						// 	$notify['link'] = "location_manager";
 
-						// 	$this->add_notifications($notify,'5');
-
-						// 	$this->add_notifications($notify,'1');
-						// }
+						
 
 						if ($form_data['hologram_type'] == 2) {
 							$task['task_type'] = "designer";
@@ -245,7 +361,7 @@ class Advertisers extends GH_Controller {
 							//$task['date'] = date('Y-01-m', $start_timestamp);
 
 							$start_date=date_create($form_data['start_date']);
-						    $task['date'] = date_format($start_date,"Y-d-m");
+						    $task['date'] = date_format($start_date,"Y-m-d");
 
 							$task3 = $this->crud_model->add_data('tasks',$task);
 
@@ -308,12 +424,14 @@ class Advertisers extends GH_Controller {
 
 		if ($advert_id != "") {
 			$where['advert_id'] = $advert_id;
-
-			$this->data['advert'] = $this->crud_model->get_data($this->table,$where,true);
+			$join['card_info'] = 'card_info.card_id=advertisements.card_id';
+			$this->data['advert'] = $this->crud_model->get_data($this->table,$where,true,$join);
 		}
+	
 
 		$this->data['advertisers'] = $this->crud_model->get_data('users',array("user_role"=>6));
 		$this->data['packages'] = $this->crud_model->get_data('packages');
+
 
 		$this->load->view('common/header',$this->data);
 		$this->load->view('common/sidebar',$this->data);
@@ -390,8 +508,14 @@ class Advertisers extends GH_Controller {
 
 		$advert =  $this->crud_model->get_data($this->table,$where,true,'','','advert_qb_id');
 
+		if ($advert->advertisment_type == 1) {
+			$qb_delete_invoice = $this->quick_books->delete_invoice($advert->advert_qb_id);
+		}else{
+			$qb_delete_invoice['error'] = false;
+		}
 
-		$qb_delete_invoice = $this->quick_books->delete_invoice($advert->advert_qb_id);
+
+		
 
 		if ($qb_delete_invoice['error'] == false) {
 
@@ -500,7 +624,6 @@ class Advertisers extends GH_Controller {
 
 			$this->data['user'] = $this->crud_model->get_data('users',$where,true);
 		}
-
 
 		$this->load->view('common/header',$this->data);
 		$this->load->view('common/sidebar',$this->data);
