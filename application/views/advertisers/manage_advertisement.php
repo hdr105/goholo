@@ -237,17 +237,17 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label class="control-label">Hologram Type</label>
+								<label class="control-label">Design file</label>
 								<select name="hologram_type" class="form-control hologram_type">
-									<option value="1">Upload File From Computer</option>
-									<option value="2">Request a Custom Hologram</option>
+									<option value="1">Upload Design From Computer</option>
+									<option value="2">Request Advertisement Design</option>
 								</select>
 							</div>
 						</div>
 						<div class="col-md-6 hologram_file_div">
 
 							<div class="form-group">
-								<label class="control-label">Upload Hologram</label>
+								<label class="control-label">Upload Advertisement Design</label>
 								<input id="hologram_file" type="file" name="hologram_file">
 
 							</div>
@@ -259,7 +259,7 @@
 					<div class="row hologram_description_div" style="display: none;">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label for="exampleInputFile1">Hologram Description</label>
+								<label for="exampleInputFile1">Design Description</label>
 								<textarea rows="5" name="hologram_description" class="form-control hologram_description"></textarea>
 							</div>
 						</div>
