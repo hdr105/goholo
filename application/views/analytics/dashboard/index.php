@@ -32,7 +32,7 @@ $(document).ready(function(){
          "opens": "center"
 }, function(start, end, label) {
 
-   window.location.href = "<?=base_url()?>/analytics/dashboard?daterange="+start.format('YYYY-MM-DD')+'/'+ end.format('YYYY-MM-DD');
+   window.location.href = "<?=base_url()?>/analytics/dashboard/<?=$locationID?>?daterange="+start.format('YYYY-MM-DD')+'/'+ end.format('YYYY-MM-DD');
 
   });
 

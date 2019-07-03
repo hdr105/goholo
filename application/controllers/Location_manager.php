@@ -37,10 +37,29 @@ class Location_manager extends GH_Controller {
 	{
 
 		$task_type = isset($_GET['type']) ? $_GET['type'] : '';
-		$month = isset($_GET['month']) ? $_GET['month'] : '';
 
 		$this->data['type'] = $task_type;
-		$this->data['month'] = $month;
+		$this->data['start_date'] = "";
+		$this->data['end_date'] = "";
+		$start_date = "";
+		$end_date = "";
+		
+
+		if ($this->input->get("date_range") != "") {
+			
+			$date = $this->input->get("date_range");
+
+			$data = explode("-", $date);
+
+			$start_date =  date("Y-m-d", strtotime($data[0]));
+			$end_date = date("Y-m-d", strtotime($data[1]));
+
+			$this->data['start_date'] = date("m/d/Y", strtotime($start_date));
+			$this->data['end_date'] = date("m/d/Y", strtotime($end_date));
+
+
+		}
+
 
 		$where_in = array();
 
@@ -66,11 +85,10 @@ class Location_manager extends GH_Controller {
 			$where_in['t.task_type'] = array('add_advert','remove_advert');
 		}
 
-		if ($month != '') {
-			
-			$month = DateTime::createFromFormat("m/Y", $month);
-			$month_timestamp = $month->getTimestamp();
-			$where['t.date'] = date('Y-01-m', $month_timestamp);
+		if ($start_date != '' & $end_date != "") {
+
+				$where['date(t.date) >='] = $start_date;
+				$where['date(t.date) <='] = $end_date; 
 		}
 
 		
@@ -91,7 +109,7 @@ class Location_manager extends GH_Controller {
 		$join['advertisements a'] = "a.advert_id=t.advert_id";
 		$join['locations l'] = "a.location_id=l.location_id";
 
-		$this->data['task'] = $this->crud_model->get_data('tasks t',$where,true,$join);
+		$this->data['task'] = $this->crud_model->get_data('tasks t',$where,true,$join,'','*,t.status as task_status');
 
 		$this->load->view('common/header',$this->data);
 		$this->load->view('common/sidebar',$this->data);

@@ -278,7 +278,7 @@ class Advertisers extends GH_Controller {
 					// print_r($qb_add);
 					// echo "</pre>"; die;
 
-					if ($qb_add['error'] == false) {
+					if ($qb_add['error'] == false) {	
 						$form_data['advert_qb_id'] = $qb_add['msg'];
 
 						$form_data['advert_number'] = ADVERT_NUMBER_PREFIX.mt_rand(100000, 999999); 

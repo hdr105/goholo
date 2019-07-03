@@ -62,8 +62,8 @@ class Video_model extends Crud_model{
 
 			if (isset($params['start_date']) && isset($params['end_date'])) {
 				
-				$where['date(created_at) >='] = $params['start_date']; 
-				$where['date(created_at) <='] = $params['end_date']; 
+				$where['date(v.created_at) >='] = $params['start_date']; 
+				$where['date(v.created_at) <='] = $params['end_date']; 
 
 			}elseif (isset($params['locationID'])) {
 				
@@ -129,8 +129,8 @@ class Video_model extends Crud_model{
 
 			if (isset($params['start_date']) && isset($params['end_date'])) {
 				
-				$where['date(created_at) >='] = $params['start_date']; 
-				$where['date(created_at) <='] = $params['end_date']; 
+				$where['date(v.created_at) >='] = $params['start_date']; 
+				$where['date(v.created_at) <='] = $params['end_date']; 
 
 			}elseif (isset($params['locationID'])) {
 				

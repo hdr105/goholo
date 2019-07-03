@@ -114,7 +114,21 @@
 
 					<div class="row">
 
-					<!--/span-->
+					<?php
+						if ($locations->advertisment_type == 1) {
+							
+					?>
+
+					<div class="col-md-6">
+						<div class="form-group">
+							<b class="col-md-4">Advertisment Type:</b>
+							<div class="col-md-8">
+								<p>Package Based</p>
+							</div>
+						</div>
+					</div>
+
+
 					<div class="col-md-6">
 						<div class="form-group">
 							<b class="col-md-4">Total Views:</b>
@@ -124,17 +138,8 @@
 						</div>
 					</div>
 					<!--/span-->
-					<div class="col-md-6">
-						<div class="form-group">
-							<b class="col-md-4">Current Views:</b>
-							<div class="col-md-8">
-								<p> <?=$locations->impressions?></p>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
+				
+			
 					<div class="col-md-6">
 						<div class="form-group">
 							<b class="col-md-4">Views Remaining:</b>
@@ -143,6 +148,34 @@
 							</div>
 						</div>
 					</div>
+
+					<?php
+						}elseif ($locations->advertisment_type == 2) {
+							?>	
+
+							<div class="col-md-6">
+						<div class="form-group">
+							<b class="col-md-4">Advertisment Type:</b>
+							<div class="col-md-8">
+								<p>Pay As You Go</p>
+							</div>
+						</div>
+					</div>
+
+							<?php
+						}
+
+					?>
+						<div class="col-md-6">
+						<div class="form-group">
+							<b class="col-md-4">Current Views:</b>
+							<div class="col-md-8">
+								<p> <?=$locations->impressions?></p>
+							</div>
+						</div>
+					</div>
+
+
 				</div>
 
 

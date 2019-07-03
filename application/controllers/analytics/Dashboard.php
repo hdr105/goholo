@@ -61,6 +61,7 @@ class Dashboard extends GH_Controller {
 			
 
 		$this->data['location'] = $location;
+		$this->data['locationID'] = $locationID;
 
 		
 

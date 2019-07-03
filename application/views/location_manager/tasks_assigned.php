@@ -7,6 +7,14 @@
 			<div class="caption">
 			Task Details </div>
 			<div class="tools">
+				<?php
+				if ($task->task_status == 0) {
+					?>
+						<a style="height: 100%" href="<?=base_url()?>location_manager/deliver_task/<?=$task->task_id?>" class="btn btn-success round-btn">Deliver Task</a>
+				<?php
+				}
+				?>
+			
 				<a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
 
 			</div>

@@ -22,7 +22,8 @@
 
 								<div class="col-md-6 ">
 
-									<input type="text" placeholder="Select Month" class="form-control MonthPicker" name="month" value="<?=$month?>">	
+									<input type="text" placeholder="Select Date" class="form-control dateRangePicker" name="date_range" value="">	
+
 
 								</div>
 
@@ -133,9 +134,37 @@
 
 	<!-- END PAGE BASE CONTENT -->
 </div>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script  type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('.MonthPicker').MonthPicker({ MinMonth: 1,Button: false });
+		//$('.MonthPicker').MonthPicker({ MinMonth: 1,Button: false });
+
+		    $('.dateRangePicker').daterangepicker({
+        "autoApply": true,
+        "autoUpdateInput": false,
+         // "startDate": "03/26/2019",
+         // "endDate": "04/01/2019",
+         "opens": "center"
+})
+		     $('.dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+});
+
+		<?php
+      if ($start_date!="" && $end_date!="") {
+         ?>
+
+         $('.dateRangePicker').data('daterangepicker').setStartDate('<?=$start_date?>');
+         $('.dateRangePicker').data('daterangepicker').setEndDate('<?=$end_date?>');
+
+         $('.dateRangePicker').val('<?=$start_date?>' + ' - ' + '<?=$end_date?>');
+           
+
+      <?php
+      }
+    ?>
 	});
 
 </script>
