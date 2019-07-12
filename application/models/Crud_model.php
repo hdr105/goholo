@@ -199,6 +199,9 @@ class Crud_model extends CI_Model{
 
 		$payment = $this->quick_books->payment($advert_obj->card_id,round($price, 2));
 
+		// echo $price;
+		// print_r($payment); die;
+
 		if (isset($payment->status) && @$payment->status == "CAPTURED") {
 
 			$data['status'] = "success";

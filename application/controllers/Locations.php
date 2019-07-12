@@ -21,7 +21,7 @@ class Locations extends GH_Controller {
 
 
 		$this->load->model("location_model");
-
+		$this->load->dbforge();
 		$this->data['menu_class'] = "location_menu";
 		$this->data['title'] = "Locations";
 		$this->data['sidebar_file'] = "location/location_sidebar";
@@ -131,16 +131,16 @@ class Locations extends GH_Controller {
 
 						$form_data['location_owner'] = $this->crud_model->add_data("users",$form_data['user']);
 
-						if ($form_data['location_owner']) {
+						// if ($form_data['location_owner']) {
 
-							$this->load->library("PhpMailerLib");
-							$mail = $this->phpmailerlib->welcome_email($form_data['user']);
+						// 	$this->load->library("PhpMailerLib");
+						// 	$mail = $this->phpmailerlib->welcome_email($form_data['user']);
 
-							if (!$mail['res']) {
+						// 	if (!$mail['res']) {
 
-								$msg = $mail['data']->ErrorInfo;
-							}
-						}
+						// 		$msg = $mail['data']->ErrorInfo;
+						// 	}
+						// }
 					}else{
 
 						$qb_vendor = false;
@@ -209,6 +209,32 @@ class Locations extends GH_Controller {
 							if ($user_role == 1) {
 
 								$form_data['status'] = 1;
+							}
+
+							$loc_number = $form_data['location_number'];
+							if(!empty($loc_number)){
+							$fields = array(
+							        'impression_id' => array(
+					                'type' => 'INT',
+					                'constraint' => 11,
+					                'unsigned' => TRUE,
+        							'auto_increment' => TRUE
+							        ),
+							        'ip_address' => array(
+					                'type' => 'VARCHAR',
+					                'constraint' => '150'
+					        		),
+					        		'check_status' => array(
+					                'type' =>'BOOLEAN',
+					                'default' => '0',
+					      			  ),
+					        		'created' => array(
+					                'type' =>'TIMESTAMP',
+					      			  ),
+							);
+							$this->dbforge->add_key('impression_id', TRUE);
+							$this->dbforge->add_field($fields);
+							$this->dbforge->create_table($loc_number, TRUE);
 							}
 
 							$location = $this->crud_model->add_data("locations",$form_data);
