@@ -22,6 +22,7 @@
 				<th>Sr.</th>
 				<th>Advertiser's Name</th>
 				<th>Advertise Number</th>
+				<th>Start Date</th>
 				<th>Location Name</th>
 				<th>Location Number</th>
 				<th>Status</th>
@@ -45,6 +46,7 @@
 				<td>".$i."</td>
 				<td>".$value->first_name.' '.$value->last_name."</td>
 				<td>".$value->advert_number."</td>
+				<td>".$value->start_date."</td>
 				<td>".$value->location_name."</td>
 				<td>".$value->location_number."</td>";
 

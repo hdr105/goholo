@@ -174,7 +174,7 @@
 								</label>
 								<select id="advertisment_type" name="advertisment_type" class="form-control advertisment_type" onchange="advertiser_packeg_type()">
 									<option value="" selected>Select Advertisment Type</option>
-									<option value="1" >Select Package</option>
+									<option value="1" >pay per performance</option>
 									<option value="2" >Pay as you go</option>
 								</select>
 								<span class="help-block" style="color:red;"> <?php echo form_error('advertisment_type'); ?> </span>

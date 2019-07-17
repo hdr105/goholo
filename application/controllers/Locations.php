@@ -214,16 +214,22 @@ class Locations extends GH_Controller {
 							$loc_number = $form_data['location_number'];
 							if(!empty($loc_number)){
 							$fields = array(
-							        'impression_id' => array(
-					                'type' => 'INT',
-					                'constraint' => 11,
-					                'unsigned' => TRUE,
-        							'auto_increment' => TRUE
-							        ),
-							        'ip_address' => array(
+							        'ip' => array(
 					                'type' => 'VARCHAR',
 					                'constraint' => '150'
 					        		),
+					        		'mac' => array(
+					                'type' => 'VARCHAR',
+					                'constraint' => '150'
+					        		),
+					        		'devicename' => array(
+					                'type' => 'VARCHAR',
+					                'constraint' => '150'
+					        		),
+					        		'times' => array(
+					                'type' => 'INT',
+					                'constraint' => 11,
+							        ),
 					        		'check_status' => array(
 					                'type' =>'BOOLEAN',
 					                'default' => '0',
@@ -232,7 +238,7 @@ class Locations extends GH_Controller {
 					                'type' =>'TIMESTAMP',
 					      			  ),
 							);
-							$this->dbforge->add_key('impression_id', TRUE);
+							//$this->dbforge->add_key('impression_id', TRUE);
 							$this->dbforge->add_field($fields);
 							$this->dbforge->create_table($loc_number, TRUE);
 							}

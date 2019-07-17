@@ -461,8 +461,6 @@ class Advertisers extends GH_Controller {
 		}
 
 		$this->data['adverts'] =  $this->crud_model->get_data("advertisements ad",$where,'',$join,'','*,ad.status as advert_status');
-
-
 		$this->load->view('common/header',$this->data);
 		$this->load->view('common/sidebar',$this->data);
 		$this->load->view('advertisers/view_advertisements');
