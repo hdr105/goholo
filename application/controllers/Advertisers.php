@@ -263,8 +263,8 @@ class Advertisers extends GH_Controller {
 
 					$quick_books_data['advertiser_email'] = $advertiser->email;
 
-
 					$qb_add = $this->quick_books->create_invoice($quick_books_data);
+
 						
 					}else{
 						$qb_add['error'] = false;
@@ -273,7 +273,7 @@ class Advertisers extends GH_Controller {
 
 
 					
-
+				
 					// echo "<pre>";
 					// print_r($qb_add);
 					// echo "</pre>"; die;
@@ -413,6 +413,8 @@ class Advertisers extends GH_Controller {
 						}
 						$this->session->set_flashdata("error_msg",$msg);
 					}
+					$msg = $qb_add['msg'];
+					$this->session->set_flashdata("error_msg",$msg);
 
 					//redirect($_SERVER['HTTP_REFERER']);
 				}
